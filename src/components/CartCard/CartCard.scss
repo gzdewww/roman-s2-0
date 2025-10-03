@@ -1,0 +1,50 @@
+.cart-card {
+  display: flex;
+  gap: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 1rem;
+  transition: box-shadow var(--transition);
+  align-items: center;
+
+  &:hover {
+    box-shadow: var(--main-shadow);
+  }
+
+  &__photo {
+    flex: 1 1 8rem;
+    height: 8rem;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+  }
+
+  &__info {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0; // фикс для переполнения текста
+  }
+
+  &__title {
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__price {
+    flex-grow: 1;
+    text-align: right;
+    font-size: 1rem;
+
+    &-value {
+      font-weight: bold;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}

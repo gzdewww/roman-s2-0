@@ -1,0 +1,239 @@
+// Глобальные стили
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Миксины
+@mixin transition($prop: all) {
+  transition: $prop var(--transition);
+}
+
+@mixin rounded($radius: var(--border-radius)) {
+  border-radius: $radius;
+}
+
+@mixin btn-reset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: none;
+  cursor: pointer;
+}
+
+// Header
+.header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  font-weight: bold;
+  color: var(--color-main);
+  background-color: var(--bg-main);
+  box-shadow: var(--main-shadow);
+  z-index: 10;
+
+  &__wrapper {
+    position: relative;
+    width: min(100%, 1280px);
+    height: 5rem;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo {
+    height: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  // Меню
+  &__menu {
+    display: flex;
+    gap: 1rem;
+    text-align: center;
+
+    &-item {
+      flex: 1 1 auto;
+      padding: 1rem 2rem;
+      @include rounded(var(--border-radius-button));
+      @include transition(background-color);
+
+      &:hover {
+        background-color: var(--bg-main-hover);
+      }
+    }
+
+    &-link {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  // Корзина
+  &__cart {
+    position: relative;
+
+    &-button {
+      background: var(--bg-complementary);
+      color: var(--color-complementary);
+      padding: 1rem;
+      font-weight: normal;
+
+      @include transition(background-color);
+
+      &:hover {
+        background-color: var(--bg-complementary-hover);
+      }
+    }
+
+    &-icon {
+      margin-right: 0.5rem;
+    }
+
+    &-sum {
+      font-weight: bold;
+      flex: 0 0 7ch; // резервируем место под цифры
+      text-align: right;
+    }
+
+    &-content {
+      position: absolute;
+      top: 5rem;
+      right: 0;
+      width: clamp(20rem, 30rem, 1280px);
+      max-height: 80dvh;
+      background-color: var(--bg-main);
+      overflow-y: auto;
+      @include rounded();
+      @include transition();
+
+      box-shadow: var(--main-shadow);
+      box-sizing: border-box;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-1em);
+
+      &--expanded {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+    }
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--color-main);
+
+      &-title {
+        font-size: 1.2rem;
+      }
+
+      .header__cart-clear {
+        @include btn-reset;
+        padding: 1rem;
+        background-color: var(--bg-complementary);
+        color: var(--color-complementary);
+        @include transition(background-color);
+
+        &:hover {
+          background-color: var(--bg-complementary-hover);
+        }
+      }
+    }
+
+    &-dishes {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    &-total {
+      color: var(--color-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.2rem;
+    }
+
+    &-order {
+      width: 100%;
+      background-color: var(--color-main);
+      color: #fff;
+      border-radius: 0;
+      padding: 1rem;
+      @include transition(background-color);
+
+      &:hover {
+        background-color: var(--bg-complementary-hover);
+      }
+    }
+  }
+
+  // Аккаунт
+  &__account {
+    position: relative;
+
+    &-button {
+      @include btn-reset;
+      font-size: 3rem;
+      line-height: 0;
+
+      svg {
+        fill: var(--bg-complementary);
+        @include transition(fill);
+      }
+
+      &:hover svg {
+        fill: var(--bg-complementary-hover);
+      }
+    }
+
+    &-menu {
+      position: absolute;
+      top: 5rem;
+      right: 0;
+      width: 200px;
+      background-color: var(--bg-main);
+      box-shadow: var(--main-shadow);
+      @include rounded();
+      @include transition();
+
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-1em);
+
+      &--expanded {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+    }
+
+    &-link {
+      display: block;
+      padding: 1em;
+      @include transition(background-color);
+
+      &:hover {
+        background-color: var(--bg-main-hover);
+      }
+    }
+  }
+}

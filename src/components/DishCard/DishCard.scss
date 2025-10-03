@@ -1,0 +1,87 @@
+@mixin transition($prop: all) {
+  transition: $prop var(--transition);
+}
+@mixin rounded($radius: var(--border-radius)) {
+  border-radius: $radius;
+}
+
+.dish {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+
+  padding: 1rem;
+  gap: 1rem;
+
+  @include transition();
+  @include rounded();
+
+  &:hover {
+    box-shadow: var(--main-shadow);
+  }
+
+  &__photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    @include rounded();
+  }
+
+  &__title {
+    width: 100%;
+    margin: 0;
+    font-weight: bold;
+    cursor: default;
+    font-size: 1.1rem;
+  }
+
+  &__description {
+    width: 100%;
+    margin: 0;
+    font-size: 14px;
+    height: 5rem;
+    overflow: auto;
+  }
+
+  &__price {
+    margin: 0;
+    text-align: left;
+    flex: 1;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    &-value {
+      font-weight: 700;
+    }
+  }
+
+  &__controls {
+    flex: 1;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+
+    > * {
+      width: 100%;
+    }
+  }
+
+  &__add {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0.5em;
+    background: var(--bg-complementary);
+    color: #fff;
+    @include transition(background-color);
+
+    &:hover {
+      background-color: var(--bg-complementary-hover);
+    }
+  }
+}
