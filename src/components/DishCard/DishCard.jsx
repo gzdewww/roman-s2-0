@@ -13,13 +13,13 @@ export default function DishCard({
   const inCart = cart.find((item) => item.id === dish.id);
 
   return (
-    <article className="dish" data-id={dish.id}>
+    <div className="dish">
       <img className="dish__photo" src={dish.photo} alt={dish.name} />
       <h3 className="dish__title">{dish.name}</h3>
       <p className="dish__description">{dish.description}</p>
 
       <p className="dish__price">
-        <span className="dish__price-value">{dish.price}</span> р.
+        <span className="dish__price-value">{dish.price}</span>р
       </p>
 
       <div className="dish__controls">
@@ -35,6 +35,6 @@ export default function DishCard({
           </Button>
         )}
       </div>
-    </article>
+    </div>
   );
 }

@@ -1,12 +1,10 @@
 :root {
   font-family: Raleway, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
-  font-variant-numeric: tabular-nums lining-nums;
-  font-feature-settings: "tnum", "lnum";
+  font-variant-numeric: lining-nums;
+  font-feature-settings: "lnum";
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
   color-scheme: light dark;
   background-color: #242424;
@@ -14,9 +12,12 @@
   --color-main: #353535;
   --color-complementary: #f0f0f0;
   --bg-main: #f0f0f0;
+  --bg-main-alpha: #f0f0f0a0;
   --bg-main-hover: #d0d0d0;
   --bg-complementary: #353535;
+  --bg-complementary-alpha: #353535a0;
   --bg-complementary-hover: #444;
+  --backdrop-filer: blur(10px);
   --main-shadow: 0 0 10px #0004;
   --transition: 150ms ease-out;
   --border-radius: 1rem;

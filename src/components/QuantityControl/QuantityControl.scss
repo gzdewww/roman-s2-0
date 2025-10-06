@@ -1,47 +1,43 @@
 .quantity {
   display: inline-flex;
-  flex-grow: 1;
-
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: nowrap;
-}
+  justify-content: space-between;
+  width: 100%;
 
-.quantity-value {
-  color: inherit;
-  field-sizing: content;
-  max-width: 5rem;
+  &__value {
+    width: 3ch;
+    color: inherit;
+    font-size: 1.25rem;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    outline: none;
 
-  font-size: 20px;
-  text-align: center;
-  background-color: transparent;
-  outline: none;
-  border: none;
+    appearance: textfield;
+    -moz-appearance: textfield;
 
-  appearance: textfield;
-  -moz-appearance: textfield;
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
-}
 
-.quantity-control {
-  aspect-ratio: 1/1;
-  cursor: pointer;
-  padding: 0.5rem;
-  user-select: none;
-  box-sizing: border-box;
-  background-color: var(--bg-complementary);
-  font-family: "Raleway", sans-serif;
-  text-align: center;
-  color: white;
-  transition: background-color var(--transition);
-  -webkit-transition: background-color var(--transition);
-  -moz-transition: background-color var(--transition);
-  -ms-transition: background-color var(--transition);
-  -o-transition: background-color var(--transition);
-  &:hover {
-    background-color: var(--bg-complementary-hover);
+  &__control {
+    aspect-ratio: 1/1;
+    padding: 0.5rem;
+    border-radius: var(--border-radius-button);
+
+    cursor: pointer;
+    user-select: none;
+
+    background-color: var(--bg-complementary);
+    color: var(--color-complementary);
+
+    transition: background-color var(--transition);
+
+    &:hover {
+      background-color: var(--bg-complementary-hover);
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { BsCart, BsTrash } from "react-icons/bs";
 import { BiSolidUserCircle } from "react-icons/bi";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import img from "/svg/logo.svg";
 
@@ -17,31 +17,62 @@ export default function Header({
 }) {
   const [cartExpanded, setCartExpanded] = useState(false);
   const [userExpanded, setUserExpanded] = useState(false);
+  const [burgerExpanded, setBurgerExpanded] = useState(false);
 
-  const sum = cart.reduce((acc, item) => {
-    return acc + menu.find((dish) => dish.id === item.id).price * item.quantity;
-  }, 0);
+  const sum = useMemo(
+    () =>
+      cart.reduce((acc, item) => {
+        return (
+          acc + menu.find((dish) => dish.id === item.id).price * item.quantity
+        );
+      }, 0),
+    [cart, menu]
+  );
 
   useEffect(() => {
     const handleClick = (event) => {
-      if (!event.target.closest(".header__cart")) setCartExpanded(false);
-      if (!event.target.closest(".header__account")) setUserExpanded(false);
+      if (!event.target.closest(".cart")) setCartExpanded(false);
+      if (!event.target.closest(".account")) setUserExpanded(false);
     };
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("touchstart", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("touchstart", handleClick);
+    };
   }, []);
 
   return (
     <header className="header">
       <div className="header__wrapper">
+        <div
+          className={`header__burger ${
+            burgerExpanded ? "header__burger--expanded" : ""
+          }`}
+        >
+          <Button
+            className="header__burger-button"
+            onClick={() => setBurgerExpanded((prev) => !prev)}
+          >
+            <div className="header__burger-line"></div>
+            <div className="header__burger-line"></div>
+            <div className="header__burger-line"></div>
+          </Button>
+        </div>
+
         <div className="header__logo">
           <a href="#">
             <img src={img} alt="Roman's logo" />
           </a>
         </div>
 
-        <nav className="header__nav">
-          <ul className="header__menu">
+        <nav
+          className={`header__nav ${
+            burgerExpanded ? "header__nav--expanded" : ""
+          }`}
+          onClick={() => setBurgerExpanded(false)}
+        >
+          <ul className="header__menu" onClick={(e) => e.stopPropagation()}>
             <li className="header__menu-item">
               <a className="header__menu-link" href="#">
                 Меню
@@ -65,32 +96,31 @@ export default function Header({
           </ul>
         </nav>
 
-        <div className="header__cart">
+        <div className="cart">
           <Button
-            className="header__cart-button"
+            className="cart-button"
+            aria-expanded={cartExpanded}
+            aria-controls="cart-dropdown"
             onClick={() => setCartExpanded((prev) => !prev)}
           >
-            <BsCart className="header__cart-icon" />
-            <p
-              className="header__cart-sum"
-              aria-label="Сумма заказа"
-            >{`${sum}р.`}</p>
+            <BsCart className="cart-icon" />
+            <p className="cart-sum" aria-label="Сумма заказа">{`${sum}р`}</p>
           </Button>
 
           <div
-            className={`header__cart-content ${
-              cartExpanded ? "header__cart-content--expanded" : ""
+            className={`cart-content ${
+              cartExpanded ? "cart-content--expanded" : ""
             }`}
           >
-            <div className="header__cart-header">
-              <h1 className="header__cart-title">Корзина</h1>
-              <Button className="header__cart-clear" onClick={clearCart}>
+            <div className="cart-header">
+              <h2 className="cart-title">Корзина</h2>
+              <Button className="cart-clear" onClick={clearCart}>
                 <span>Очистить</span>
                 <BsTrash />
               </Button>
             </div>
 
-            <div className="header__cart-dishes">
+            <div className="cart-dishes" role="list">
               {cart.map((dish) => (
                 <CartCard
                   key={dish.id}
@@ -101,41 +131,45 @@ export default function Header({
                 />
               ))}
 
-              <div className="header__cart-total">
+              <div className="cart-total">
                 {cart.length > 0 ? (
                   <>
-                    <h1 className="header__cart-total-title">Итого</h1>
-                    <p className="header__cart-total-sum">{sum}р.</p>
+                    <h3 className="cart-total-title">Итого</h3>
+                    <p className="cart-total-sum">{sum}р</p>
                   </>
                 ) : (
-                  <h1 className="header__cart-empty">Корзина пуста</h1>
+                  <h3 className="cart-empty">Корзина пуста</h3>
                 )}
               </div>
             </div>
 
-            <Button id="cart-to-order" className="header__cart-order" disabled>
+            <Button
+              id="cart-to-order"
+              className="cart-order"
+              disabled={!cart.length}
+            >
               Перейти к оформлению
             </Button>
           </div>
         </div>
 
-        <div className="header__account">
+        <div className="account">
           <Button
-            className="header__account-button"
+            className="account__button"
             onClick={() => setUserExpanded(!userExpanded)}
           >
-            <BiSolidUserCircle className="header__account-icon" />
+            <BiSolidUserCircle className="account__button-icon" />
           </Button>
 
           <div
-            className={`header__account-menu ${
-              userExpanded ? "header__account-menu--expanded" : ""
+            className={`account__menu ${
+              userExpanded ? "account__menu--expanded" : ""
             }`}
           >
-            <a className="header__account-link" href="./src/html/cabinet.html">
+            <a className="account__link" href="#">
               Личный кабинет
             </a>
-            <a className="header__account-link" href="#">
+            <a className="account__link" href="#">
               Выход
             </a>
           </div>
