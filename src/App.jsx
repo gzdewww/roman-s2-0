@@ -9,7 +9,8 @@ import Menu from "./pages/Menu/Menu";
 import NotFound from "./pages/NotFound/NotFound";
 
 import "./App.scss";
-import Modal from "./UI/Modal/Modal";
+import Delivery from "./pages/Delivery/Delivery";
+import Summary from "./pages/Summary/Summary";
 
 function App() {
   const menu = [
@@ -123,18 +124,9 @@ function App() {
               />
             }
           />
-          {/* <Route
-            path="/cart"
-            element={
-              <Cart
-                cart={cart}
-                removeFromCart={removeFromCart}
-                updateCart={updateCart}
-                clearCart={clearCart}
-              />
-            }
-          /> */}
+          <Route path="/delivery" element={<Delivery />} />
           <Route path="/about" element={<About />} />
+          <Route path="/summary" element={<Summary />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
