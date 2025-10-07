@@ -12,6 +12,7 @@ export default function Footer() {
         </div>
         <div className="footer__contacts">
           <a
+            aria-label="Ссылка на ВК"
             className="footer__contacts-link"
             href="https://vk.com/gzdeww"
             target="_blank"
@@ -19,6 +20,7 @@ export default function Footer() {
             <FaVk />
           </a>
           <a
+            aria-label="Ссылка на Телеграм"
             className="footer__contacts-link"
             href="https://t.me/gzdeww"
             target="_blank"

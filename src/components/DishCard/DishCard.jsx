@@ -10,10 +10,10 @@ export default function DishCard({
   removeFromCart,
   updateCart,
 }) {
-  const inCart = cart.find((item) => item.id === dish.id);
+  const inCart = cart?.find((item) => item.id === dish.id);
 
   return (
-    <div className="dish">
+    <div className="dish" role="listitem">
       <img className="dish__photo" src={dish.photo} alt={dish.name} />
       <h3 className="dish__title">{dish.name}</h3>
       <p className="dish__description">{dish.description}</p>

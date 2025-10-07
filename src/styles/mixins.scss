@@ -1,0 +1,13 @@
+@mixin transition($prop: all) {
+  transition: $prop var(--transition);
+}
+
+@mixin rounded($radius: var(--border-radius)) {
+  border-radius: $radius;
+}
+
+@mixin flex-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

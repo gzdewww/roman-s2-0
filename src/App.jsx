@@ -1,8 +1,15 @@
-import Header from "./components/Header/Header";
-import { useCart } from "./hooks/useCart";
-import "./App.scss";
-import DishCard from "./components/DishCard/DishCard";
+import { Route, Routes } from "react-router";
 import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+
+import { useCart } from "./hooks/useCart";
+
+import About from "./pages/About/About";
+import Menu from "./pages/Menu/Menu";
+import NotFound from "./pages/NotFound/NotFound";
+
+import "./App.scss";
+import Modal from "./UI/Modal/Modal";
 
 function App() {
   const menu = [
@@ -91,18 +98,45 @@ function App() {
       />
 
       <div className="content">
-        <div className="content__menu">
-          {menu.map((dish) => (
-            <DishCard
-              key={dish.id}
-              dish={dish}
-              cart={cart}
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
-              updateCart={updateCart}
-            />
-          ))}
-        </div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Menu
+                menu={menu}
+                cart={cart}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
+                updateCart={updateCart}
+              />
+            }
+          />
+          <Route
+            path="/menu"
+            element={
+              <Menu
+                menu={menu}
+                cart={cart}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
+                updateCart={updateCart}
+              />
+            }
+          />
+          {/* <Route
+            path="/cart"
+            element={
+              <Cart
+                cart={cart}
+                removeFromCart={removeFromCart}
+                updateCart={updateCart}
+                clearCart={clearCart}
+              />
+            }
+          /> */}
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
 
       <Footer />

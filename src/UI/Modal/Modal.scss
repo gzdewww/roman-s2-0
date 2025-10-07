@@ -1,0 +1,39 @@
+@use "../../styles/mixins" as *;
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;
+  @include flex-centered();
+  background-color: var(--bg-complementary-alpha);
+  backdrop-filter: var(--backdrop-filer);
+  z-index: 1000;
+
+  &__content {
+    position: relative;
+
+    @include flex-centered();
+    flex-direction: column;
+
+    padding: 2rem;
+
+    background-color: var(--bg-main);
+    border-radius: var(--border-radius);
+    box-shadow: var(--main-shadow);
+  }
+
+  &__close {
+    position: absolute;
+    top: -1.5rem;
+    right: -1.5rem;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    font-size: 1.5rem;
+    color: var(--color-complementary);
+  }
+}

@@ -1,0 +1,19 @@
+@use "../../styles/mixins" as *;
+
+.content__not-found {
+  flex-grow: 1;
+  
+  @include flex-centered();
+  flex-direction: column;
+}
+
+.not-found {
+  &__image {
+    width: 80%;
+    padding: 2rem;
+  }
+  &__title {
+    font-size: 2rem;
+    font-weight: bolder;
+  }
+}

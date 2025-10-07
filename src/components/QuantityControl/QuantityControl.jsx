@@ -34,11 +34,12 @@ export default function QuantityControl({ value, setValue, removeFromCart }) {
 
   return (
     <div className="quantity">
-      <Button className="quantity__control" onClick={handleDecrement}>
+      <Button aria-label="Уменьшить количество" className="quantity__control" onClick={handleDecrement}>
         <BsDashLg />
       </Button>
 
       <input
+        aria-label="Количество"
         ref={inputRef}
         type="text"
         className="quantity__value"
@@ -48,7 +49,7 @@ export default function QuantityControl({ value, setValue, removeFromCart }) {
         onKeyDown={handleEnter}
       />
 
-      <Button className="quantity__control" onClick={handleIncrement}>
+      <Button aria-label="Увеличить количество" className="quantity__control" onClick={handleIncrement}>
         <BsPlusLg />
       </Button>
     </div>
