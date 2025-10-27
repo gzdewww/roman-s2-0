@@ -1,0 +1,38 @@
+@use "../../styles/mixins" as *;
+
+strong {
+  font-weight: bold;
+  line-height: 150%;
+}
+
+.content__delivery {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.delivery {
+  &__title {
+    font-size: 2rem;
+    font-weight: bolder;
+  }
+  &__map {
+    width: 100%;
+    height: 30rem;
+
+    box-shadow: var(--box-shadow);
+
+    @include rounded();
+  }
+
+  &__button {
+    background-color: var(--bg-complementary);
+    color: var(--color-complementary);
+    padding: 0;
+    &-link {
+      padding: 1rem;
+      width: 100%;
+    }
+  }
+}

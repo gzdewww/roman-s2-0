@@ -1,0 +1,81 @@
+.select {
+  position: relative;
+  background-color: var(--bg-main);
+  border-radius: var(--border-radius);
+
+  user-select: none;
+  border: solid 1px var(--color-main);
+
+  transition: filter var(--transition), background-color var(--transition);
+
+  &:hover {
+    background-color: var(--bg-main-hover);
+  }
+
+  &--expanded {
+    filter: drop-shadow(var(--box-shadow));
+    z-index: 100;
+  }
+
+  &__button {
+    width: 100%;
+    padding: 1rem;
+    justify-content: space-between;
+  }
+
+  &__text {
+    margin: 0;
+  }
+
+  &__icon {
+    font-size: 1.5rem;
+    transition: transform var(--transition);
+    .select--expanded & {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__options {
+    --option-count: 0;
+
+    pointer-events: none;
+    max-height: 0;
+    border-radius: var(--border-radius);
+
+    position: absolute;
+    left: 0;
+    top: calc(100% + 1px);
+
+    width: 100%;
+
+    overflow: hidden;
+    line-height: 1;
+
+    background-color: var(--bg-main);
+
+    transition: max-height var(--transition);
+
+    .select--expanded & {
+      pointer-events: all;
+      max-height: calc(3.2rem * var(--option-count));
+    }
+  }
+
+  &__option {
+    padding: 1rem;
+
+    transition: background-color var(--transition);
+
+    &:hover {
+      background-color: var(--bg-main-hover);
+    }
+
+    &--active {
+      background-color: var(--bg-complementary);
+      color: var(--color-complementary);
+      &:hover {
+        background-color: var(--bg-complementary-hover);
+      }
+    }
+  }
+}
