@@ -205,7 +205,6 @@ export default function Summary() {
         <AddressModal
           isOpen={isAddressModalOpen}
           onClose={() => setIsAddressModalOpen(false)}
-          onSuccess={handleAddressModalSuccess}
         />
       )}
     </>

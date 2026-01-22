@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getProfile, login, register } from "../../api/authApi";
+import { login, register } from "../../api/authApi";
+import { initialAuthState } from "../../constants/InitialState";
 import type { LoginRequest, RegisterRequest } from "../../types/auth";
 import type { User } from "../../types/user";
-import { initialAuthState } from "../../constants/InitialState";
+import { getProfile } from "../../api/userApi";
 
 export interface AuthState {
   user: User | null;

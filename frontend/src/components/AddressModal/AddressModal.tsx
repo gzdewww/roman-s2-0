@@ -4,17 +4,16 @@ import Modal from "../../UI/Modal/Modal";
 import Button from "../../UI/Button/Button";
 import { Input } from "../../UI/Input/Input";
 import "./AddressModal.scss";
+import { addAddress } from "../../api/userApi";
 
 interface AddressModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: (address: string) => void;
 }
 
 export default function AddressModal({
   isOpen,
   onClose,
-  onSuccess,
 }: AddressModalProps) {
   const [address, setAddress] = useState("");
   const [entrance, setEntrance] = useState("");
@@ -25,7 +24,7 @@ export default function AddressModal({
     e.preventDefault();
 
     const fullAddress = `ул. ${address}${entrance ? `, подъезд ${entrance}` : ""}${apartment ? `, кв. ${apartment}` : ""}`;
-    onSuccess(fullAddress);
+    addAddress(fullAddress);
 
     // Очищаем форму
     setAddress("");
@@ -48,7 +47,6 @@ export default function AddressModal({
               type="text"
               value={address}
               onChangeValue={setAddress}
-              placeholder="ул. Ленина, д. 10"
               required
             />
           </div>
@@ -60,7 +58,6 @@ export default function AddressModal({
                 type="text"
                 value={entrance}
                 onChangeValue={setEntrance}
-                placeholder="1"
               />
             </div>
 
@@ -70,7 +67,6 @@ export default function AddressModal({
                 type="text"
                 value={apartment}
                 onChangeValue={setApartment}
-                placeholder="25"
               />
             </div>
           </div>

@@ -4,10 +4,9 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getProfileThunk, openAuthModal } from "../../store/auth/authSlice";
 import { fetchMyBookings } from "../../store/bookings/bookingsSlice";
 import { fetchMyOrders } from "../../store/orders/ordersSlice";
+import { DeliveryType } from "../../types/enums";
 import Button from "../../UI/Button/Button";
 import "./Profile.scss";
-import { getProfile } from "../../api/authApi";
-import { DeliveryType } from "../../types/enums";
 
 export default function Profile() {
   const dispatch = useAppDispatch();
