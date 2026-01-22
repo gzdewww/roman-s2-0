@@ -1,16 +1,62 @@
-# React + Vite
+# Описание
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Проект представляет собой веб-приложение для заказа блюд в ресторанах. В нем реализована авторизация и регистрация пользователей, возможность просматривать меню ресторанов, добавлять блюда в корзину, оформлять заказы и просматривать историю заказов.
 
-Currently, two official plugins are available:
+## Технологии
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Проект разработан с использованием следующих технологий:
 
-## React Compiler
+- Frontend: React, Redux, TypeScript, Vite, SCSS
+- Backend: Spring Boot, Java, PostgreSQL
+- API: REST, OAuth2
+- CI/CD: GitHub Actions
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Установка и запуск
 
-## Expanding the ESLint configuration
+### Frontend
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Клонируйте репозиторий: git clone https://github.com/gzdewww/romans2-0.git
+2. Перейдите в директорию проекта: cd romans2-0/frontend
+3. Установите зависимости: npm install
+4. Запустите проект: npm run dev
+
+### Backend
+
+1. Клонируйте репозиторий: git clone https://github.com/gzdewww/romans2-0.git
+2. Перейдите в директорию проекта: cd romans2-0/backend
+3. Установите зависимости: mvn install
+4. Запустите проект: mvn spring-boot:run
+
+## Использование
+
+1. Запустите frontend и backend.
+2. Перейдите на страницу регистрации и зарегистрируйтесь.
+3. Перейдите на страницу авторизации и войдите.
+4. Просмотрите меню ресторанов и добавьте блюда в корзину.
+5. Перейдите в корзину и оформите заказ.
+6. Просмотрите историю ваших заказов.
+
+
+## Контракт
+
+GET /api/restaurants — список ресторанов
+
+POST /api/restaurants — создать ресторан (201)
+
+GET /api/restaurants/{id} — получить ресторан
+
+GET /api/restaurants/{id}/menus — меню ресторана
+
+GET /api/menus/{id} — получить меню
+
+POST /api/menus — создать меню (передать restaurantId и опц. dishIds)
+
+POST /api/menus/{id}/dishes — прикрепить блюдо к меню (body: { "dishId": 12 })
+
+DELETE /api/menus/{id}/dishes/{dishId} — убрать блюдо из меню
+
+GET /api/dishes/{id} — получить блюдо
+
+POST /api/dishes — создать блюдо (передать menuIds если нужно)
+
+PUT /api/dishes/{id} — обновить блюдо

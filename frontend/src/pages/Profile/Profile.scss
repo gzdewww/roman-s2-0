@@ -1,0 +1,461 @@
+// src/pages/PersonalCabinet/PersonalCabinet.scss
+.personal-cabinet {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+
+  &--unauthorized {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 60px 40px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
+
+    h2 {
+      margin: 0 0 16px 0;
+      color: #333;
+      font-size: 24px;
+    }
+
+    p {
+      margin: 0 0 24px 0;
+      color: #666;
+      line-height: 1.5;
+    }
+  }
+
+  &__header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 40px;
+    color: white;
+    margin-bottom: 32px;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+  }
+
+  &__user-info {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  &__avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: white;
+    color: #667eea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &__welcome {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  &__email,
+  &__phone {
+    margin: 4px 0 0 0;
+    opacity: 0.9;
+    font-size: 16px;
+  }
+
+  &__stats {
+    display: flex;
+    gap: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 24px;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__stat-number {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  &__stat-label {
+    font-size: 14px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__tabs {
+    display: flex;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 32px;
+  }
+
+  &__tab {
+    position: relative;
+    padding: 16px 32px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #6c757d;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+
+    &:hover {
+      color: #495057;
+    }
+
+    &--active {
+      color: #007bff;
+      border-bottom-color: #007bff;
+    }
+  }
+
+  &__tab-count {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #007bff;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  &__content {
+    min-height: 400px;
+  }
+
+  &__loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+    font-size: 18px;
+  }
+
+  &__empty-section {
+    text-align: center;
+    padding: 60px 40px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+
+    p {
+      margin: 0 0 24px 0;
+      color: #6c757d;
+      font-size: 18px;
+    }
+  }
+}
+
+// Стили для карточек заказов
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__number {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+  }
+
+  &__status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+
+    &.status--pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    &.status--confirmed {
+      background-color: #d1ecf1;
+      color: #0c5460;
+    }
+
+    &.status--progress {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    &.status--delivered {
+      background-color: #d1e7dd;
+      color: #0f5132;
+    }
+
+    &.status--cancelled {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  }
+
+  &__date {
+    color: #6c757d;
+    font-size: 14px;
+  }
+
+  &__details {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__label {
+    display: block;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  &__items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f8f9fa;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__item-name {
+    flex: 1;
+    color: #333;
+  }
+
+  &__item-quantity {
+    margin: 0 16px;
+    color: #6c757d;
+    font-size: 14px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  &__item-price {
+    font-weight: 500;
+    color: #333;
+    min-width: 80px;
+    text-align: right;
+  }
+
+  &__summary {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    align-self: start;
+  }
+
+  &__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  &__total-label {
+    font-size: 16px;
+    color: #495057;
+  }
+
+  &__total-amount {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  &__delivery {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__delivery-label {
+    color: #6c757d;
+    font-size: 14px;
+  }
+
+  &__delivery-value {
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+// Стили для карточек бронирований
+.bookings-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.booking-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 24px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  &__header {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  &__restaurant {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    flex: 1;
+  }
+
+  &__status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    &.status--pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    &.status--confirmed {
+      background-color: #d1ecf1;
+      color: #0c5460;
+    }
+
+    &.status--completed {
+      background-color: #d1e7dd;
+      color: #0f5132;
+    }
+
+    &.status--cancelled {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  }
+
+  &__date {
+    color: #6c757d;
+    font-size: 14px;
+    text-align: right;
+  }
+
+  &__details {
+    margin-bottom: 24px;
+  }
+
+  &__guests {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  &__label {
+    font-weight: 500;
+    color: #495057;
+    font-size: 14px;
+  }
+
+  &__value {
+    color: #333;
+  }
+
+  &__comment {
+    background-color: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  &__comment-text {
+    margin: 8px 0 0 0;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

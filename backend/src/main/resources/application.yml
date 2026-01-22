@@ -1,18 +1,22 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/romansdb
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://localhost:5432/restaurant_db
+    username: restaurant_user
+    password: restaurant_pass
     driver-class-name: org.postgresql.Driver
-
   jpa:
+    defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-
   sql:
     init:
       mode: always
+      platform: postgresql
+
+jwt:
+  secret: Y2hhbmdlLXRoaXMtc2VjcmV0LWNoYW5nZS10aGlzLXNlY3JldA==
+

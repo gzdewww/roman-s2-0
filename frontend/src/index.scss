@@ -1,7 +1,8 @@
 @use "./styles/fonts" as *;
 
 :root {
-  font-family: "Acrom", Raleway, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:
+    "Acrom", Raleway, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-variant-numeric: lining-nums;
   font-feature-settings: "lnum";
@@ -23,7 +24,7 @@
   --box-shadow: 0 0 10px #0004;
   --transition: 150ms ease-out;
   --border-radius: 1rem;
-  --border-radius-button: 0.5rem;
+  --border-radius-sm: 0.5rem;
 }
 
 body {

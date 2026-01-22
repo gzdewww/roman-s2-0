@@ -1,0 +1,47 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+
+  &__label {
+    font-weight: 500;
+    color: var(--color-main);
+  }
+
+  &__field {
+    font: inherit;
+    position: relative;
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--color-main);
+    border-radius: var(--border-radius-sm);
+    background: none;
+    outline: none;
+    color: var(--color-main);
+
+    transition: background-color var(--transition);
+
+    &:hover {
+      background-color: var(--bg-main-hover);
+    }
+
+    &::placeholder {
+      color: rgba(var(--color-main), 0.5);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &--error &__container {
+    border-color: crimson;
+  }
+
+  &__error {
+    color: crimson;
+    font-size: 0.75rem;
+  }
+}

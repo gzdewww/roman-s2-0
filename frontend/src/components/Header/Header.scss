@@ -78,7 +78,7 @@ ul {
     text-align: center;
 
     &-item {
-      @include rounded(var(--border-radius-button));
+      @include rounded(var(--border-radius-sm));
       @include transition(background-color);
 
       &:hover {

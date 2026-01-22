@@ -6,9 +6,10 @@
   "configurations": [
     {
       "type": "java",
-      "name": "RomansBackendApplication",
+      "name": "BackendApplication",
       "request": "launch",
-      "mainClass": "com.romans.backend.RomansBackendApplication"
+      "mainClass": "com.romans.app.BackendApplication",
+      "projectName": "backend"
     },
     {
       "type": "chrome",

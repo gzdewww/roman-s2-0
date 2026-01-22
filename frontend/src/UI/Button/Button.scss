@@ -11,9 +11,11 @@
   padding: 0.5em 1em;
   margin: 0;
   border: none;
-  border-radius: var(--border-radius-button);
+  border-radius: var(--border-radius-sm);
 
-  transition: background-color var(--transition), color var(--transition);
+  transition:
+    background-color var(--transition),
+    color var(--transition);
 
   &:disabled {
     pointer-events: none;

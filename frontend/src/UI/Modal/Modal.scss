@@ -12,6 +12,7 @@
   z-index: 1000;
 
   &__content {
+    width: min(90vw, 480px);
     position: relative;
 
     @include flex-centered();
