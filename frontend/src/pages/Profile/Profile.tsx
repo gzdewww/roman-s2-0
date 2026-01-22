@@ -7,6 +7,7 @@ import { fetchMyOrders } from "../../store/orders/ordersSlice";
 import Button from "../../UI/Button/Button";
 import "./Profile.scss";
 import { getProfile } from "../../api/authApi";
+import { DeliveryType } from "../../types/enums";
 
 export default function Profile() {
   const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ export default function Profile() {
   }, [dispatch]);
 
   if (!authState.user && authState.token) {
-    dispatch(getProfileThunk())
+    dispatch(getProfileThunk());
   }
 
   if (!authState.user) {
@@ -201,7 +202,7 @@ export default function Profile() {
                               Доставка:
                             </span>
                             <span className="order-card__delivery-value">
-                              {order.deliveryType === "DELIVERY"
+                              {order.deliveryType === DeliveryType.DELIVERY
                                 ? "Доставка"
                                 : "Самовывоз"}
                             </span>

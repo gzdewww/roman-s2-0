@@ -1,5 +1,7 @@
 package com.romans.app.service.impl;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,5 +32,23 @@ public class UserServiceImpl implements UserService {
   public User findById(Long id) {
     return userRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+  }
+
+  @Transactional
+  public UserDto addAddress(Long userId, String address) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+    if (user.getAddresses() == null) {
+      user.setAddresses(new ArrayList<>());
+    }
+
+    // Можно добавить фильтр дубликатов, если нужно:
+    if (!user.getAddresses().contains(address)) {
+      user.getAddresses().add(address);
+    }
+
+    User saved = userRepository.save(user);
+    return UserMapper.toDto(saved);
   }
 }

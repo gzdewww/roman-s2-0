@@ -1,0 +1,67 @@
+// src/components/AddressModal/AddressModal.scss
+.address-modal {
+  min-width: 400px;
+  
+  &__title {
+    margin: 0 0 20px 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  &__field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  &__label {
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+    
+    &::after {
+      content: '*';
+      color: #dc3545;
+      margin-left: 4px;
+    }
+    
+    &:not(:has(+ input[required]))::after {
+      content: '';
+    }
+  }
+  
+  &__row {
+    display: flex;
+    gap: 20px;
+    
+    .address-modal__field {
+      flex: 1;
+    }
+  }
+  
+  &__textarea {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+  
+  &__buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+}

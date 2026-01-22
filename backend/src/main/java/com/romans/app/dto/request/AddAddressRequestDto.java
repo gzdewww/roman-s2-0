@@ -1,6 +1,5 @@
 package com.romans.app.dto.request;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginRequestDto {
-  @Email(message = "Invalid email")
-  @NotBlank(message = "Email required")
-  private String email;
+public class AddAddressRequestDto {
 
-  @NotBlank(message = "Password required")
-  private String password;
-
+  @NotBlank(message = "Address must not be blank")
+  private String address;
 }

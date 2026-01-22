@@ -7,4 +7,6 @@ public interface UserService {
   UserDto getMe(Long userId);
 
   User findById(Long userId);
+
+  UserDto addAddress(Long userId, String address);
 }

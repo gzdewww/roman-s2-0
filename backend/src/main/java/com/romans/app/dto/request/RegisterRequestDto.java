@@ -1,5 +1,8 @@
 package com.romans.app.dto.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +15,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class RegisterRequestDto {
+  @NotBlank(message = "Name required")
   private String name;
+
+  @Email(message = "Invalid email") @NotBlank(message = "Email required")
   private String email;
+
+  @NotBlank(message = "Password required")
+  @Size(min = 6, message = "Password must be at least 6 characters")
   private String password;
 }

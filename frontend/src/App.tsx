@@ -15,13 +15,25 @@ import RegisterForm from "./components/Auth/RegisterForm.js";
 import { useAppDispatch, useAppSelector } from "./hooks/reduxHooks.js";
 import Profile from "./pages/Profile/Profile.js";
 import Restaurants from "./pages/Restaurants/Restaurants.js";
-import { closeAuthModal } from "./store/auth/authSlice.js";
+import { closeAuthModal, getProfileThunk, logout, openAuthModal } from "./store/auth/authSlice.js";
+import { useEffect } from "react";
 
 function App() {
   const isAuthModalOpen = useAppSelector((state) => state.auth.modalOpen);
   const authModalType = useAppSelector((state) => state.auth.modalType);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    dispatch(getProfileThunk())
+      .unwrap()
+      .catch(() => {
+        dispatch(logout());
+        dispatch(openAuthModal("login"));
+      });
+  }, [dispatch]);
 
   return (
     <>

@@ -12,6 +12,7 @@ import com.romans.app.dto.request.RegisterRequestDto;
 import com.romans.app.dto.response.AuthResponse;
 import com.romans.app.service.impl.AuthServiceImpl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,13 +23,13 @@ public class AuthController {
   private final AuthServiceImpl authService;
 
   @PostMapping("/login")
-  public AuthResponse login(@RequestBody LoginRequestDto request) {
+  public AuthResponse login(@Valid @RequestBody LoginRequestDto request) {
     return authService.login(request);
   }
 
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
-  public AuthResponse register(@RequestBody RegisterRequestDto request) {
+  public AuthResponse register(@Valid @RequestBody RegisterRequestDto request) {
     return authService.register(request);
   }
 }
