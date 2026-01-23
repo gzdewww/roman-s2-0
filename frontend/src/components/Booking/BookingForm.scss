@@ -7,29 +7,25 @@
   &__title {
     margin: 0 0 8px 0;
     font-size: 20px;
-    color: #333;
   }
 
   &__restaurant {
     margin: 0;
-    color: #666;
     font-size: 14px;
   }
 
   &__error {
-    background-color: #ffebee;
     color: #c62828;
     padding: 12px 16px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-sm);
     margin-bottom: 20px;
     border: 1px solid #ffcdd2;
   }
 
   &__warning {
-    background-color: #fff8e1;
     color: #ff8f00;
     padding: 12px 16px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-sm);
     margin-bottom: 20px;
     border: 1px solid #ffe082;
   }
@@ -59,56 +55,43 @@
   &__label {
     margin-bottom: 8px;
     font-weight: 500;
-    color: #555;
     font-size: 14px;
   }
 
   &__time-select {
     padding: 10px 12px;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: var(--border-radius-sm);
     font-size: 16px;
-    background-color: white;
     transition: border-color 0.2s;
-
-    &:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-    }
-
-    &:disabled {
-      background-color: #f8f9fa;
-      cursor: not-allowed;
-    }
   }
 
   &__comment {
     padding: 10px 12px;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: var(--border-radius-sm);
     font-size: 16px;
     font-family: inherit;
-    resize: vertical;
+    resize: none;
     transition: border-color 0.2s;
-
-    &:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-    }
-
-    &:disabled {
-      background-color: #f8f9fa;
-      cursor: not-allowed;
-    }
   }
 
   &__actions {
     display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
+    gap: 1rem;
+    justify-content: space-between;
+    border-radius: var(--border-radius-sm);
+
+    & button{
+      flex: 1 0 0;
+      background-color: var(--bg-complementary);
+      color: var(--color-complementary);
+      border: none;
+      border-radius: var(--border-radius-sm);
+      padding: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
   }
 }

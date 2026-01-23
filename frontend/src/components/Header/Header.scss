@@ -65,9 +65,13 @@ ul {
     height: 100%;
     text-align: center;
 
-    img {
+    &-icon {
+      width: auto;
       height: 100%;
       object-fit: cover;
+      path {
+        fill: var(--color-main);
+      }
     }
   }
 

@@ -76,7 +76,7 @@
     width: 100%;
     padding: 0.5em;
     background: var(--bg-complementary);
-    color: #fff;
+    color: var(--color-complementary);
     @include transition(background-color);
 
     &:hover {

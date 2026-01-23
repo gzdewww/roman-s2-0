@@ -1,52 +1,6 @@
--- Вставка данных в addresses
-INSERT INTO
-    addresses (
-        id,
-        flat,
-        entrance,
-        comment,
-        geo
-    )
-VALUES (
-        1,
-        25,
-        1,
-        'Код домофона 25К',
-        '55.7558,37.6173'
-    ),
-    (
-        2,
-        42,
-        3,
-        'Парадная',
-        '55.7604,37.6185'
-    ),
-    (
-        3,
-        17,
-        1,
-        'Звонок Петровым',
-        '55.7512,37.6154'
-    ),
-    (
-        4,
-        12,
-        2,
-        'Последний этаж',
-        '55.7538,37.6201'
-    ),
-    (
-        5,
-        8,
-        1,
-        'Рядом с почтой',
-        '55.7493,37.6227'
-    );
-
 -- Вставка данных в users
 INSERT INTO
     users (
-        id,
         name,
         email,
         phone,
@@ -54,132 +8,44 @@ INSERT INTO
         role
     )
 VALUES (
-        1,
-        'Иван Петров',
-        'ivan@example.com',
-        '+79161234567',
-        '$2a$10$YourHashedPassword123',
-        'MANAGER'
-    ),
-    (
-        2,
-        'Мария Сидорова',
-        'maria@example.com',
-        '+79162345678',
-        '$2a$10$YourHashedPassword456',
-        'CUSTOMER'
-    ),
-    (
-        3,
-        'Алексей Козлов',
-        'alex@example.com',
-        '+79163456789',
-        '$2a$10$YourHashedPassword789',
+        'admin',
+        'admin@admin.com',
+        '+79169012345',
+        '$2a$10$AmPHPs4lnpa.SYS6dXIhCeBrnnOw63DD0.KxzUVmVvARzGHMtksUG',
         'ADMIN'
-    ),
-    (
-        4,
-        'Елена Воробьева',
-        'elena@example.com',
-        '+79164567890',
-        '$2a$10$YourHashedPassword012',
-        'MANAGER'
-    ),
-    (
-        5,
-        'Дмитрий Соколов',
-        'dmitry@example.com',
-        '+79165678901',
-        '$2a$10$YourHashedPassword345',
-        'COURIER'
-    ),
-    (
-        6,
-        'Анна Кузнецова',
-        'anna@example.com',
-        '+79166789012',
-        '$2a$10$YourHashedPassword678',
-        'CUSTOMER'
-    ),
-    (
-        7,
-        'Сергей Морозов',
-        'sergey@example.com',
-        '+79167890123',
-        '$2a$10$YourHashedPassword901',
-        'MANAGER'
-    ),
-    (
-        8,
-        'Ольга Новикова',
-        'olga@example.com',
-        '+79168901234',
-        '$2a$10$YourHashedPassword234',
-        'MANAGER'
-    );
-
--- Вставка данных в user_addresses
-INSERT INTO
-    user_addresses (user_id, address)
-VALUES (
-        1,
-        'ул. Ленина, д. 10, кв. 25'
-    ),
-    (1, 'пр. Мира, д. 15, кв. 42'),
-    (
-        2,
-        'ул. Пушкина, д. 5, кв. 17'
-    ),
-    (
-        3,
-        'ул. Гагарина, д. 33, кв. 12'
-    ),
-    (
-        6,
-        'ул. Садовая, д. 20, кв. 8'
     );
 
 -- Вставка данных в restaurants
 INSERT INTO
     restaurants (
-        id,
         name,
         address,
         seats_count,
-        image_url,
-        manager_id
+        image_url
     )
 VALUES (
-        1,
         'Roman`s Nordic',
         'ул. Тверская, д. 15',
         50,
-        '/images/rest1.jpg',
-        1
+        '/images/rest1.jpg'
     ),
     (
-        2,
         'Roman`s Loft',
         'пр. Ленина, д. 42',
         30,
-        '/images/rest2.jpg',
-        4
+        '/images/rest2.jpg'
     ),
     (
-        3,
         'Roman`s Fusion',
         'ул. Пушкина, д. 10',
         40,
-        '/images/rest3.jpg',
-        7
+        '/images/rest3.jpg'
     ),
     (
-        4,
         'Roman`s Zen',
         'пр. Мира, д. 25',
         35,
-        '/images/rest4.jpg',
-        8
+        '/images/rest4.jpg'
     );
 
 -- Вставка данных в dishes (30 блюд)
@@ -588,181 +454,10 @@ VALUES (
         '/images/juice.jpg'
     );
 
--- Вставка данных в bookings
-INSERT INTO
-    bookings (
-        id,
-        user_id,
-        restaurant_id,
-        booking_time,
-        guests_count,
-        comment
-    )
-VALUES (
-        1,
-        1,
-        1,
-        '2024-01-15 19:00:00',
-        4,
-        'День рождения'
-    ),
-    (
-        2,
-        2,
-        2,
-        '2024-01-16 20:00:00',
-        2,
-        'Романтический ужин'
-    ),
-    (
-        3,
-        1,
-        3,
-        '2024-01-17 18:30:00',
-        6,
-        'Встреча с друзьями'
-    ),
-    (
-        4,
-        6,
-        4,
-        '2024-01-18 21:00:00',
-        3,
-        'Без особых пожеланий'
-    ),
-    (
-        5,
-        2,
-        1,
-        '2024-01-19 19:30:00',
-        5,
-        'Стол у окна'
-    );
-
--- Вставка данных в orders
-INSERT INTO
-    orders (
-        id,
-        created_at,
-        delivered_at,
-        delivery_address,
-        delivery_type,
-        total_price,
-        status,
-        client_id,
-        courier_id
-    )
-VALUES (
-        1,
-        '2024-01-10 18:30:00',
-        '2024-01-10 19:15:00',
-        'ул. Ленина, д. 10, кв. 25',
-        'DELIVERY',
-        2580,
-        'DELIVERED',
-        1,
-        5
-    ),
-    (
-        2,
-        '2024-01-11 19:00:00',
-        '2024-01-11 19:45:00',
-        'ул. Пушкина, д. 5, кв. 17',
-        'DELIVERY',
-        1860,
-        'DELIVERED',
-        2,
-        7
-    ),
-    (
-        3,
-        '2024-01-12 12:30:00',
-        NULL,
-        'пр. Мира, д. 15, кв. 42',
-        'DELIVERY',
-        3250,
-        'IN_PROGRESS',
-        1,
-        5
-    ),
-    (
-        4,
-        '2024-01-12 20:00:00',
-        '2024-01-12 20:20:00',
-        'ул. Тверская, д. 15',
-        'PICKUP',
-        1480,
-        'DELIVERED',
-        6,
-        NULL
-    ),
-    (
-        5,
-        '2024-01-13 14:00:00',
-        NULL,
-        'ул. Садовая, д. 20, кв. 8',
-        'DELIVERY',
-        2150,
-        'CONFIRMED',
-        6,
-        NULL
-    ),
-    (
-        6,
-        '2024-01-13 19:30:00',
-        NULL,
-        'ул. Гагарина, д. 33, кв. 12',
-        'DELIVERY',
-        890,
-        'CANCELLED',
-        3,
-        NULL
-    );
-
--- Вставка данных в order_items
-INSERT INTO
-    order_items (
-        id,
-        price_at_moment,
-        quantity,
-        dish_id,
-        order_id
-    )
-VALUES (1, 590, 1, 1, 1),
-    (2, 690, 1, 2, 1),
-    (3, 390, 1, 3, 1),
-    (4, 220, 1, 29, 1),
-    (5, 250, 1, 30, 1),
-    (6, 450, 2, 6, 2),
-    (7, 480, 2, 8, 2),
-    (8, 750, 1, 4, 3),
-    (9, 520, 2, 7, 3),
-    (10, 420, 1, 25, 3),
-    (11, 390, 1, 21, 3),
-    (12, 250, 2, 30, 3),
-    (13, 550, 1, 9, 4),
-    (14, 490, 1, 10, 4),
-    (15, 220, 2, 29, 4),
-    (16, 580, 1, 17, 5),
-    (17, 420, 1, 16, 5),
-    (18, 650, 1, 19, 5),
-    (19, 250, 2, 30, 5),
-    (20, 390, 1, 11, 6),
-    (21, 190, 1, 14, 6),
-    (22, 220, 1, 29, 6),
-    (23, 290, 1, 26, 6);
-
 SELECT setval(
         pg_get_serial_sequence('users', 'id'), (
             SELECT MAX(id)
             FROM users
-        )
-    );
-
-SELECT setval(
-        pg_get_serial_sequence('addresses', 'id'), (
-            SELECT MAX(id)
-            FROM addresses
         )
     );
 
@@ -777,26 +472,5 @@ SELECT setval(
         pg_get_serial_sequence('dishes', 'id'), (
             SELECT MAX(id)
             FROM dishes
-        )
-    );
-
-SELECT setval(
-        pg_get_serial_sequence('bookings', 'id'), (
-            SELECT MAX(id)
-            FROM bookings
-        )
-    );
-
-SELECT setval(
-        pg_get_serial_sequence('orders', 'id'), (
-            SELECT MAX(id)
-            FROM orders
-        )
-    );
-
-SELECT setval(
-        pg_get_serial_sequence('order_items', 'id'), (
-            SELECT MAX(id)
-            FROM order_items
         )
     );

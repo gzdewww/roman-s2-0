@@ -1,7 +1,7 @@
 .select {
   position: relative;
   background-color: var(--bg-main);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-sm);
   user-select: none;
   border: solid 1px var(--color-main);
   transition: filter var(--transition), background-color var(--transition);
@@ -78,7 +78,7 @@
 
     pointer-events: none;
     max-height: 0;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-sm);
     position: absolute;
     left: 0;
     top: calc(100% + 1px);
@@ -98,25 +98,6 @@
       opacity var(--transition),
       transform var(--transition);
     z-index: 1000;
-
-    // Scrollbar styling
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: var(--bg-main);
-      border-radius: 3px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: var(--color-main);
-      border-radius: 3px;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: var(--color-main-hover);
-    }
   }
 
   &__option {

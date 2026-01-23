@@ -311,9 +311,6 @@ export default function Profile() {
                         >
                           Перенести
                         </Button>
-                      </div>
-
-                      <div className="booking-card__actions">
                         <Button
                           onClick={async () => {
                             await deleteBookingById(booking.id);

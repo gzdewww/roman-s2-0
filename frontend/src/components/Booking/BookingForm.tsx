@@ -6,6 +6,7 @@ import { Input } from "../../UI/Input/Input";
 import "./BookingForm.scss";
 import { createBookingThunk } from "../../store/bookings/bookingsSlice";
 import { closeRestaurantModal } from "../../store/restaurants/restaurantsSlice";
+import Select from "../../UI/Select/Select";
 
 export default function BookingForm() {
   const restaurantState = useAppSelector((state) => state.restaurants);
@@ -105,10 +106,21 @@ export default function BookingForm() {
 
           <div className="booking-form__field">
             <label className="booking-form__label">Время</label>
-            <select
-              className="booking-form__time-select"
+            <Select
+            options={[{value: "12:00", label: "12:00"},
+            {value: "13:00", label: "13:00"},
+            {value: "14:00", label: "14:00"},
+            {value: "15:00", label: "15:00"},
+            {value: "16:00", label: "16:00"},
+            {value: "17:00", label: "17:00"},
+            {value: "18:00", label: "18:00"},
+            {value: "19:00", label: "19:00"},
+            {value: "20:00", label: "20:00"},
+            {value: "21:00", label: "21:00"},
+            {value: "22:00", label: "22:00"},
+            ]}
               value={time}
-              onChange={(e) => setTime(e.target.value)}
+              onChangeValue={setTime}
               required
               disabled={bookingState.loading}
             >
@@ -123,7 +135,7 @@ export default function BookingForm() {
               <option value="20:00">20:00</option>
               <option value="21:00">21:00</option>
               <option value="22:00">22:00</option>
-            </select>
+            </Select>
           </div>
         </div>
 

@@ -10,7 +10,7 @@
   text-rendering: optimizeLegibility;
 
   color-scheme: light dark;
-  background-color: #242424;
+  background-color: #e0e0e0;
 
   --color-main: #353535;
   --color-complementary: #f0f0f0;
@@ -31,7 +31,6 @@ body {
   margin: 0;
   min-width: 320px;
 
-  background-color: var(--bg-main);
   color: var(--color-main);
 }
 
@@ -42,9 +41,15 @@ body {
   min-height: 100vh;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    background-color: #292929;
+    --color-main: #f0f0f0;
+    --color-complementary: #1d1d1d;
+    --bg-main: #1d1d1d;
+    --bg-main-alpha: #1d1d1da0;
+    --bg-main-hover: #222;
+    --bg-complementary: #f0f0f0;
+    --bg-complementary-hover: #d0d0d0;
   }
 }

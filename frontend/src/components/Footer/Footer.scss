@@ -20,15 +20,12 @@
     &-icon {
       height: 10rem;
       width: auto;
-      border-bottom: solid white 1px;
+      border-bottom: solid var(--color-complementary) 1px;
       margin-bottom: 1em;
       path {
         fill: var(--color-complementary);
       }
     }
-  }
-
-  &__nav {
   }
 
   &__list {

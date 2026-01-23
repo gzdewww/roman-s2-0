@@ -110,7 +110,7 @@
   &__order {
     width: 100%;
     background-color: var(--color-main);
-    color: #fff;
+    color: var(--bg-main);
     padding: 0;
     border-radius: 0;
     @include transition(background-color);

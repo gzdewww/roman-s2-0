@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-import img from "/svg/logo.svg";
+import Logo from "../../../public/svg/logo.svg?react";
 
 import { Link } from "react-router";
 import Button from "../../UI/Button/Button";
@@ -64,7 +64,7 @@ export default function Header() {
 
         <div className="header__logo">
           <Link className="header__logo-link" to="/">
-            <img src={img} alt="Roman's logo" />
+            <Logo className="header__logo-icon" />
           </Link>
         </div>
 
