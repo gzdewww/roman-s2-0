@@ -13,3 +13,16 @@ export const getMyBookings = async (): Promise<Booking[]> => {
   const res = await api.get<Booking[]>("/bookings/my");
   return res.data;
 };
+
+export const deleteBookingById = async (bookingId: number) => {
+  const res = await api.delete(`/bookings/${bookingId}`);
+  return res.data;
+};
+
+export const editTimeById = async (bookingTime: string, bookingId: number) => {
+  const res = await api.put(
+    `/bookings/${bookingId}`,
+    { bookingTime },
+  );
+  return res.data;
+};

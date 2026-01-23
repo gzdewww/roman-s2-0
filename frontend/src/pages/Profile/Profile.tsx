@@ -1,31 +1,64 @@
 // src/pages/PersonalCabinet/PersonalCabinet.tsx
 import { useEffect, useState } from "react";
+import { deleteBookingById } from "../../api/bookingsApi";
+import BookingForm from "../../components/Booking/BookingForm";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getProfileThunk, openAuthModal } from "../../store/auth/authSlice";
-import { fetchMyBookings } from "../../store/bookings/bookingsSlice";
+import { closeBookingModal, fetchMyBookings, openBookingModal } from "../../store/bookings/bookingsSlice";
 import { fetchMyOrders } from "../../store/orders/ordersSlice";
+import {
+  closeRestaurantModal
+} from "../../store/restaurants/restaurantsSlice";
 import { DeliveryType } from "../../types/enums";
 import Button from "../../UI/Button/Button";
+import Modal from "../../UI/Modal/Modal";
 import "./Profile.scss";
+import BookingEditForm from "../../components/Booking/BookingEditForm";
 
 export default function Profile() {
   const dispatch = useAppDispatch();
   const authState = useAppSelector((state) => state.auth);
   const ordersState = useAppSelector((state) => state.orders);
   const bookingState = useAppSelector((state) => state.bookings);
+  const restaurantState = useAppSelector((state) => state.restaurants);
 
   const [activeTab, setActiveTab] = useState<"orders" | "bookings">("orders");
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchMyOrders());
-    dispatch(fetchMyBookings());
-  }, [dispatch]);
+    // Загружаем данные профиля и истории при монтировании
+    const initializeProfile = async () => {
+      // Если есть токен, но нет данных пользователя, загружаем профиль
+      if (authState.token && !authState.user) {
+        await dispatch(getProfileThunk());
+      }
+      
+      // Загружаем заказы и бронирования
+      dispatch(fetchMyOrders());
+      dispatch(fetchMyBookings());
+      
+      setIsInitialized(true);
+    };
 
-  if (!authState.user && authState.token) {
-    dispatch(getProfileThunk());
+    if (!isInitialized) {
+      initializeProfile();
+    }
+  }, [dispatch, authState.token, authState.user, isInitialized]);
+
+  // Показываем загрузку, пока данные инициализируются
+  if (!isInitialized && authState.token) {
+    return (
+      <div className="personal-cabinet personal-cabinet--loading">
+        <div className="personal-cabinet__empty">
+          <h2>Загрузка профиля...</h2>
+          <p>Пожалуйста, подождите</p>
+        </div>
+      </div>
+    );
   }
 
-  if (!authState.user) {
+  // Если нет пользователя и токена, показываем форму входа
+  if (!authState.user && !authState.token) {
     return (
       <div className="personal-cabinet personal-cabinet--unauthorized">
         <div className="personal-cabinet__empty">
@@ -39,7 +72,7 @@ export default function Profile() {
     );
   }
 
-  const user = authState.user;
+  const user = authState.user!;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("ru-RU", {
@@ -273,10 +306,18 @@ export default function Profile() {
                       <div className="booking-card__actions">
                         <Button
                           onClick={() => {
-                            // TODO: Добавить функционал отмены брони
-                            alert(
-                              "Функция отмены бронирования скоро будет доступна",
-                            );
+                            dispatch(openBookingModal(booking.id));
+                          }}
+                        >
+                          Перенести
+                        </Button>
+                      </div>
+
+                      <div className="booking-card__actions">
+                        <Button
+                          onClick={async () => {
+                            await deleteBookingById(booking.id);
+                            dispatch(fetchMyBookings());
                           }}
                         >
                           Отменить
@@ -290,6 +331,12 @@ export default function Profile() {
           </div>
         )}
       </div>
+
+      {bookingState.isModalOpen && (
+        <Modal onClose={() => dispatch(closeBookingModal())}>
+          <BookingEditForm />
+        </Modal>
+      )}
     </div>
   );
 }

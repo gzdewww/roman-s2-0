@@ -1,5 +1,6 @@
 package com.romans.app.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -24,36 +25,61 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class BookingServiceImpl implements BookingService {
 
-  private final BookingRepository bookingRepository;
-  private final RestaurantRepository restaurantRepository;
-  private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
 
-  @Override
-  public BookingDto create(CreateBookingRequestDto request, Long userId) {
+    @Override
+    public BookingDto create(CreateBookingRequestDto request, Long userId) {
 
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-    Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
-        .orElseThrow(() -> new EntityNotFoundException("Restaurant not found"));
+        Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
+                .orElseThrow(() -> new EntityNotFoundException("Restaurant not found"));
 
-    Booking booking = new Booking();
-    booking.setUser(user);
-    booking.setRestaurant(restaurant);
-    booking.setBookingTime(request.getBookingTime());
-    booking.setGuestsCount(request.getGuestsCount());
-    booking.setComment(request.getComment());
+        Booking booking = new Booking();
+        booking.setUser(user);
+        booking.setRestaurant(restaurant);
+        booking.setBookingTime(request.getBookingTime());
+        booking.setGuestsCount(request.getGuestsCount());
+        booking.setComment(request.getComment());
 
-    return BookingMapper.toDto(bookingRepository.save(booking));
-  }
+        return BookingMapper.toDto(bookingRepository.save(booking));
+    }
 
-  @Override
-  @Transactional(readOnly = true)
-  public List<BookingDto> getMyBookings(Long userId) {
-    return bookingRepository.findByUserIdOrderByBookingTimeDesc(userId)
-        .stream()
-        .map(
-            BookingMapper::toDto)
-        .toList();
-  }
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookingDto> getMyBookings(Long userId) {
+        return bookingRepository.findByUserIdOrderByBookingTimeDesc(userId)
+                .stream()
+                .map(
+                        BookingMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public BookingDto updateBookingTime(Long bookingId, LocalDateTime newBookingTime, Long userId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new EntityNotFoundException("Booking not found with id: " + bookingId));
+        if (!booking.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("You are not authorized to update this booking");
+        }
+        booking.setBookingTime(newBookingTime);
+        Booking updatedBooking = bookingRepository.save(booking);
+        return BookingMapper.toDto(updatedBooking);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long bookingId, Long userId) {
+        // 1. Проверяем существование брони
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new EntityNotFoundException("Booking not found with id: " + bookingId));
+        if (!booking.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("You are not authorized to delete this booking");
+        };
+        bookingRepository.delete(booking);
+    }
 }

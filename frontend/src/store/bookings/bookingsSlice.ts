@@ -1,3 +1,4 @@
+// bookingsSlice.ts
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createBooking, getMyBookings } from "../../api/bookingsApi";
 import type { Booking } from "../../types/booking";
@@ -21,12 +22,23 @@ export const fetchMyBookings = createAsyncThunk<Booking[]>(
 export interface BookingsState {
   items: Booking[];
   loading: boolean;
+  selectedBookingId: number | null; // Изменено с selectedBooking на selectedBookingId
+  isModalOpen: boolean;
 }
 
 const bookingsSlice = createSlice({
   name: "bookings",
   initialState: initialBookingsState,
-  reducers: {},
+  reducers: {
+    openBookingModal: (state, action: { payload: number }) => { // Указываем тип payload
+      state.selectedBookingId = action.payload; // Сохраняем ID, а не весь объект
+      state.isModalOpen = true;
+    },
+    closeBookingModal: (state) => {
+      state.selectedBookingId = null;
+      state.isModalOpen = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMyBookings.pending, (state) => {
@@ -43,3 +55,4 @@ const bookingsSlice = createSlice({
 });
 
 export default bookingsSlice.reducer;
+export const { openBookingModal, closeBookingModal } = bookingsSlice.actions;

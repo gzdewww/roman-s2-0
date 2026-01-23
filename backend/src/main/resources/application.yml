@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/restaurant_db
-    username: restaurant_user
-    password: restaurant_pass
+    username: postgres
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     defer-datasource-initialization: true

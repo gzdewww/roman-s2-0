@@ -28,6 +28,8 @@ export const initialRestaurantsState: RestaurantsState = {
 export const initialBookingsState: BookingsState = {
   items: [],
   loading: false,
+  selectedBookingId: null,
+  isModalOpen: false,
 } as const;
 
 export const initialOrdersState: OrdersState = {

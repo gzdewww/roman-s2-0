@@ -22,6 +22,10 @@ export default function Summary() {
   const [paymentMethod, setPaymentMethod] = useState<string>("card");
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
 
+  useEffect(() => {
+    dispatch(fetchRestaurants());
+  }, [dispatch, deliveryMethod]);
+
   const totalAmount = cart.reduce((sum, item) => {
     return sum + item.dish.price * item.quantity;
   }, 0);
@@ -44,7 +48,7 @@ export default function Summary() {
 
   // Адреса пользователя для доставки
   const userAddresses: Option[] = [
-    ...userAddressesMap || [],
+    ...(userAddressesMap || []),
     {
       label: "Добавить новый адрес",
       value: "add",

@@ -27,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
 
+  @Override
   public AuthResponse login(LoginRequestDto request) {
     User user = userRepository.findByEmail(request.getEmail())
         .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
@@ -40,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
     return new AuthResponse(jwtService.generateToken(user.getId(), user.getRole().name()));
   }
 
+  @Override
   public AuthResponse register(RegisterRequestDto request) {
     if (userRepository.findByEmail(request.getEmail()).isPresent()) {
       throw new IllegalArgumentException("Email already exists");
