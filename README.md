@@ -6,10 +6,9 @@
 
 Проект разработан с использованием следующих технологий:
 
-- Frontend: React, Redux, TypeScript, Vite, SCSS
-- Backend: Spring Boot, Java, PostgreSQL
-- API: REST, OAuth2
-- CI/CD: GitHub Actions
+- **Frontend**: React, TypeScript, Vite, SCSS, React Router, Redux Toolkit, Axios, React Icons, SVGR
+- **Backend**: Spring Boot, Java, Maven, JPA, Hibernate, PostgreSQL, JWT, Spring Security, Lombok, MapStruct, ModelMapper
+- **Common**: VS Code, ESLint, Prettier
 
 ## Установка и запуск
 
