@@ -11,10 +11,24 @@ public class RestaurantMapper {
     return RestaurantDto.builder()
         .id(restaurant.getId())
         .name(restaurant.getName())
-        .address(restaurant.getAddress())
+        .address(AddressMapper.toDto(restaurant.getAddress()))
         .seatsCount(restaurant.getSeatsCount())
         .imageUrl(restaurant.getImageUrl())
-        .manager(ManagerMapper.toDto(restaurant.getManager()))
+        .manager(UserMapper.toDto(restaurant.getManager()))
         .build();
+  }
+
+  public static Restaurant toEntity(RestaurantDto restaurantDto) {
+    if (restaurantDto == null) {
+      return null;
+    }
+    Restaurant restaurant = new Restaurant();
+    restaurant.setId(restaurantDto.getId());
+    restaurant.setName(restaurantDto.getName());
+    restaurant.setAddress(AddressMapper.toEntity(restaurantDto.getAddress()));
+    restaurant.setSeatsCount(restaurantDto.getSeatsCount());
+    restaurant.setImageUrl(restaurantDto.getImageUrl());
+    restaurant.setManager(UserMapper.toEntity(restaurantDto.getManager()));
+    return restaurant;
   }
 }

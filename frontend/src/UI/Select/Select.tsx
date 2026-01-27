@@ -3,23 +3,25 @@ import { BsChevronDown } from "react-icons/bs";
 import Button from "../Button/Button";
 import "./Select.scss";
 
-export type Option = {
-  value: string;
+export type Option<T> = {
+  value: T | null;
   label: string;
   onClick?: () => void;
 };
 
-export type SelectProps = {
-  options: Option[];
-  value: string;
-  onChange?: (value: string, option: Option) => void; // Сделали опциональным
+export type SelectProps<T> = {
+  options: Option<T>[];
+  value: T | null;
+  onChange?: (option: Option<T>) => void;
   placeholder?: string;
   className?: string;
   disabled?: boolean;
   ariaLabel?: string;
 };
 
-export default function Select({
+// ... остальные импорты без изменений ...
+
+export default function Select<T>({
   options,
   value,
   onChange,
@@ -27,36 +29,62 @@ export default function Select({
   className = "",
   disabled = false,
   ariaLabel = "Select dropdown",
-}: SelectProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+}: SelectProps<T>) {
+  const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   const selectRef = useRef<HTMLDivElement>(null);
   const optionsRef = useRef<HTMLUListElement>(null);
 
-  const selectedOption = options.find((option) => option.value === value);
+  const selectedOption = options.find((opt) => opt.value === value);
 
-  // Close dropdown when clicking outside
+  // Проверяем, находится ли фокус внутри этого селекта
+  const isFocusedInside = () => {
+    return selectRef.current?.contains(document.activeElement);
+  };
+
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (
+      selectRef.current &&
+      !selectRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+      setFocusedIndex(-1);
+    }
+  }, []);
+
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        selectRef.current &&
-        !selectRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-        setFocusedIndex(-1);
-      }
-    };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [handleClickOutside]);
 
-  // Handle keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (!isOpen) return;
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (disabled) return;
+
+      // Реагируем только если фокус на селекте
+      if (!isFocusedInside()) {
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          // Но не открываем все сразу — только если фокус на этом селекте
+          // Чтобы избежать открытия всех, мы НЕ открываем по стрелке, если фокус не внутри
+          return;
+        }
+        return;
+      }
+
+      if (!isOpen) {
+        if (event.key === "ArrowDown") {
+          event.preventDefault();
+          setIsOpen(true);
+          setFocusedIndex(0);
+        } else if (event.key === "ArrowUp") {
+          event.preventDefault();
+          setIsOpen(true);
+          setFocusedIndex(options.length - 1);
+        }
+        return;
+      }
 
       switch (event.key) {
         case "ArrowDown":
@@ -67,16 +95,15 @@ export default function Select({
           break;
         case "ArrowUp":
           event.preventDefault();
-          setFocusedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+          setFocusedIndex((prev) => (prev > 0 ? prev - 1 : 0));
           break;
         case "Enter":
         case " ":
           event.preventDefault();
           if (focusedIndex >= 0) {
-            const option = options[focusedIndex];
-            if (option) {
-              handleSelectOption(option);
-            }
+            handleSelectOption(
+              options[focusedIndex] || { value: null, label: "" },
+            );
           }
           break;
         case "Escape":
@@ -89,21 +116,23 @@ export default function Select({
           setFocusedIndex(-1);
           break;
       }
-    };
+    },
+    [isOpen, focusedIndex, options, disabled],
+  );
 
+  useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
-
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, focusedIndex, options]);
+  }, [handleKeyDown]);
 
-  // Scroll focused option into view
+  // Прокрутка к активному элементу
   useEffect(() => {
     if (isOpen && focusedIndex >= 0 && optionsRef.current) {
-      const optionElements = optionsRef.current.children;
-      if (optionElements[focusedIndex]) {
-        (optionElements[focusedIndex] as HTMLElement).scrollIntoView({
+      const optionElement = optionsRef.current.children[focusedIndex];
+      if (optionElement) {
+        (optionElement as HTMLElement).scrollIntoView({
           block: "nearest",
           behavior: "smooth",
         });
@@ -112,16 +141,15 @@ export default function Select({
   }, [focusedIndex, isOpen]);
 
   const handleSelectOption = useCallback(
-    (option: Option) => {
-      if (typeof onChange === "function") {
-        onChange(option.value, option);
+    (option: Option<T>) => {
+      if (onChange && option.value !== null) {
+        onChange(option);
       }
-      setIsOpen(false);
-      setFocusedIndex(-1);
-
       if (option.onClick) {
         option.onClick();
       }
+      setIsOpen(false);
+      setFocusedIndex(-1);
     },
     [onChange],
   );
@@ -130,78 +158,60 @@ export default function Select({
     if (disabled) return;
 
     setIsOpen((prev) => {
-      const nextState = !prev;
-      if (nextState) {
+      const next = !prev;
+      if (next) {
         const currentIndex = options.findIndex((opt) => opt.value === value);
         setFocusedIndex(currentIndex >= 0 ? currentIndex : 0);
       } else {
         setFocusedIndex(-1);
       }
-      return nextState;
+      return next;
     });
   }, [disabled, options, value]);
 
-  const handleOptionKeyDown = (
-    event: React.KeyboardEvent<HTMLLIElement>,
-    option: Option,
-  ) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      handleSelectOption(option);
-    }
-  };
-
-  const handleButtonKeyDown = (
-    event: React.KeyboardEvent<HTMLButtonElement>,
-  ) => {
-    switch (event.key) {
-      case "Enter":
-      case " ":
-        event.preventDefault();
-        handleToggle();
-        break;
-      case "ArrowDown":
-        event.preventDefault();
-        if (!isOpen) {
-          setIsOpen(true);
-          setFocusedIndex(0);
-        }
-        break;
-      case "ArrowUp":
-        event.preventDefault();
-        if (!isOpen) {
-          setIsOpen(true);
-          setFocusedIndex(options.length - 1);
-        }
-        break;
-    }
-  };
-
-  const handleOptionMouseEnter = (index: number) => {
+  const handleOptionMouseEnter = useCallback((index: number) => {
     setFocusedIndex(index);
-  };
+  }, []);
 
   return (
     <div
       ref={selectRef}
-      className={`select ${isOpen ? "select--expanded" : ""} ${disabled ? "select--disabled" : ""} ${className}`}
+      className={[
+        "select",
+        isOpen && "select--expanded",
+        disabled && "select--disabled",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       role="combobox"
       aria-expanded={isOpen}
       aria-haspopup="listbox"
-      aria-label={ariaLabel}
       aria-disabled={disabled}
+      aria-label={ariaLabel}
+      tabIndex={-1} // Делаем контейнер "фокусируемым" через дочерние элементы
     >
       <Button
         className="select__button"
         onClick={handleToggle}
-        onKeyDown={handleButtonKeyDown}
+        onKeyDown={(e) => {
+          // Кнопка сама по себе фокусируется — это точка входа
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleToggle();
+          }
+        }}
         disabled={disabled}
-        aria-label={`${selectedOption?.label || placeholder}. ${isOpen ? "Expanded" : "Collapsed"}. Press arrow keys to navigate options.`}
+        aria-label={
+          selectedOption
+            ? `${selectedOption.label}. ${isOpen ? "Expanded" : "Collapsed"}. Use arrow keys to navigate.`
+            : `${placeholder}. Press Enter or Space to open.`
+        }
         aria-controls="select-options"
-        tabIndex={0}
+        tabIndex={0} // Кнопка — основная точка фокуса
       >
         <span className="select__text">
-          {selectedOption ? selectedOption.label : placeholder}
+          {selectedOption?.label || placeholder}
         </span>
         <BsChevronDown className="select__icon" aria-hidden="true" />
       </Button>
@@ -210,23 +220,26 @@ export default function Select({
         ref={optionsRef}
         id="select-options"
         className="select__options"
-        style={{ "--option-count": options.length } as React.CSSProperties}
         role="listbox"
         aria-label="Select options"
+        style={{ "--option-count": options.length } as React.CSSProperties}
       >
         {options.map((option, index) => (
           <li
-            key={option.value}
-            className={`select__option ${
-              option.value === value ? "select__option--active" : ""
-            } ${index === focusedIndex ? "select__option--focused" : ""}`}
+            key={option.label}
+            className={[
+              "select__option",
+              option.value === value && "select__option--active",
+              index === focusedIndex && "select__option--focused",
+            ]
+              .filter(Boolean)
+              .join(" ")}
             role="option"
             aria-selected={option.value === value}
             onClick={() => handleSelectOption(option)}
-            onKeyDown={(e) => handleOptionKeyDown(e, option)}
             onMouseEnter={() => handleOptionMouseEnter(index)}
             tabIndex={-1}
-            data-value={option.value}
+            data-value={option.value ?? ""}
           >
             {option.label}
           </li>

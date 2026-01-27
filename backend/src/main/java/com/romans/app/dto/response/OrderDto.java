@@ -21,7 +21,7 @@ public class OrderDto {
   private Long id;
   private LocalDateTime createdAt;
   private LocalDateTime deliveredAt;
-  private String deliveryAddress;
+  private AddressDto deliveryAddress;
   private DeliveryType deliveryType;
   private Integer totalPrice;
   private OrderStatus status;

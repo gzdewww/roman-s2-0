@@ -28,11 +28,12 @@ public class Restaurant {
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
-  @Column(name = "name", nullable = false)
+  @Column(name = "name", nullable = false, unique = true)
   private String name;
 
-  @Column(name = "address", nullable = false)
-  private String address;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "address_id", nullable = false)
+  private Address address;
 
   @Column(name = "seats_count", nullable = false)
   private Integer seatsCount;
@@ -41,6 +42,6 @@ public class Restaurant {
   private String imageUrl;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "manager_id")
+  @JoinColumn(name = "manager_id", unique = true)
   private User manager;
 }

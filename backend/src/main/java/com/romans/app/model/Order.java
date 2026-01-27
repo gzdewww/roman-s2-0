@@ -1,6 +1,7 @@
 package com.romans.app.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -42,8 +43,9 @@ public class Order {
   @Column(name = "delivered_at")
   private LocalDateTime deliveredAt;
 
-  @Column(name = "delivery_address", nullable = false)
-  private String deliveryAddress;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "delivery_address_id", nullable = false)
+  private Address deliveryAddress;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "delivery_type", nullable = false)
@@ -65,5 +67,6 @@ public class Order {
   private User courier;
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<OrderItem> items;
+  @Builder.Default
+  private List<OrderItem> items = new ArrayList<>();
 }

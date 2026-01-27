@@ -16,3 +16,8 @@ export const getOrderById = async (id: number): Promise<Order> => {
   const res = await api.get<Order>(`/orders/${id}`);
   return res.data;
 };
+
+export const getOrders = async (): Promise<Order[]> => {
+  const res = await api.get<Order[]>("/orders");
+  return res.data;
+};

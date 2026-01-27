@@ -1,5 +1,6 @@
 package com.romans.app.dto.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.romans.app.model.Role;
@@ -20,6 +21,6 @@ public class UserDto {
   private String name;
   private String email;
   private String phone;
-  private Role role;
-  private List<String> addresses;
+  private List<Role> roles;
+  private LocalDateTime createdAt;
 }

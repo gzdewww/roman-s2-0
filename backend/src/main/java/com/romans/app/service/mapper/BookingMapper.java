@@ -16,4 +16,17 @@ public class BookingMapper {
         .comment(booking.getComment())
         .build();
   }
+
+  public static Booking toEntity(BookingDto bookingDto) {
+    if (bookingDto == null) {
+      return null;
+    }
+    return Booking.builder()
+        .id(bookingDto.getId())
+        .restaurant(RestaurantMapper.toEntity(bookingDto.getRestaurant()))
+        .bookingTime(bookingDto.getBookingTime())
+        .guestsCount(bookingDto.getGuestsCount())
+        .comment(bookingDto.getComment())
+        .build();
+  }
 }

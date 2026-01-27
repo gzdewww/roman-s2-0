@@ -11,7 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ManagerShortDto {
+public class AddressDto {
   private Long id;
-  private String name;
+  private String street;
+  private Integer building;
+  private Integer apartment;
+  private Integer floor;
+  private Integer entrance;
+  private String comment;
 }

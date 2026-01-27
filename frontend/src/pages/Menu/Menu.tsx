@@ -3,9 +3,10 @@ import DishCard from "../../components/DishCard/DishCard";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { fetchDishes } from "../../store/dishes/dishesSlice";
 import "./Menu.scss";
+import Spinner from "../../UI/Spinner/Spinner";
 
 export default function Menu() {
-  const dishes = useAppSelector((state) => state.dishes.items);
+  const dishesState = useAppSelector((state) => state.dishes);
   const dispatch = useAppDispatch();
 
   const getDishes = async () => {
@@ -17,10 +18,16 @@ export default function Menu() {
   }, []);
 
   return (
-    <div className="content__menu" role="list">
-      {dishes.map((dish) => (
-        <DishCard key={dish.id} dish={dish} />
-      ))}
-    </div>
+    <>
+      {dishesState.loading ? (
+        <Spinner />
+      ) : (
+        <div className="content__menu" role="list">
+          {dishesState.items.map((dish) => (
+            <DishCard key={dish.id} dish={dish} />
+          ))}
+        </div>
+      )}
+    </>
   );
 }

@@ -44,4 +44,8 @@ public class Booking {
 
   @Column(name = "comment")
   private String comment;
+
+  @Column(name = "created_at", nullable = false, updatable = false)
+  @Builder.Default
+  private LocalDateTime createdAt = LocalDateTime.now();
 }

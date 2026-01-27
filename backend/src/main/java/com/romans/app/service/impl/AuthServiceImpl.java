@@ -1,5 +1,7 @@
 package com.romans.app.service.impl;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
           "Invalid credentials");
     }
 
-    return new AuthResponse(jwtService.generateToken(user.getId(), user.getRole().name()));
+    return new AuthResponse(jwtService.generateToken(user.getId(), user.getRoles().toString()));
   }
 
   @Override
@@ -51,9 +53,9 @@ public class AuthServiceImpl implements AuthService {
     user.setName(request.getName());
     user.setEmail(request.getEmail());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
-    user.setRole(Role.CUSTOMER);
+    user.setRoles(List.of(Role.CUSTOMER));
 
     userRepository.save(user);
-    return new AuthResponse(jwtService.generateToken(user.getId(), user.getRole().name()));
+    return new AuthResponse(jwtService.generateToken(user.getId(), user.getRoles().toString()));
   }
 }

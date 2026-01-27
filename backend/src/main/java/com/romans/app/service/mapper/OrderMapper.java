@@ -14,7 +14,7 @@ public class OrderMapper {
       .id(order.getId())
       .createdAt(order.getCreatedAt())
       .deliveredAt(order.getDeliveredAt())
-      .deliveryAddress(order.getDeliveryAddress())
+      .deliveryAddress(AddressMapper.toDto(order.getDeliveryAddress()))
       .totalPrice(order.getTotalPrice())
       .status(order.getStatus())
       .client(UserMapper.toDto(order.getClient()))

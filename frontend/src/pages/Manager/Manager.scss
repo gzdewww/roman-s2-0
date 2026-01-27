@@ -1,0 +1,101 @@
+// frontend/src/pages/Manager/ManagerDashboard.scss
+
+.manager-dashboard {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.manager-dashboard__title {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.manager-dashboard__empty {
+  text-align: center;
+  padding: 3rem;
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius);
+  color: #666;
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.manager-dashboard__orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.order-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.order-card__header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.order-card__date {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.order-card__content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.order-card__section {
+  line-height: 1.5;
+}
+
+.order-card__assign {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  select {
+    flex: 1;
+    min-height: 40px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+  }
+
+  button {
+    min-width: 120px;
+  }
+}

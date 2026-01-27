@@ -1,116 +1,115 @@
 import { useEffect, useState } from "react";
 import { createOrder } from "../../api/ordersApi";
+import AddressModal from "../../components/AddressModal/AddressModal";
 import CartCard from "../../components/CartCard/CartCard";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { clearCart } from "../../store/cart/cartSlice";
-import { DeliveryType } from "../../types/enums";
+import { DeliveryType, PaymentMethod } from "../../types/enums";
 import Button from "../../UI/Button/Button";
 import Select, { type Option } from "../../UI/Select/Select";
-import AddressModal from "../../components/AddressModal/AddressModal";
 
-import "./Summary.scss";
+import { formatAddressShort } from "../../helpers/addressFormatter";
 import { fetchRestaurants } from "../../store/restaurants/restaurantsSlice";
+import { fetchProfileThunk } from "../../store/users/usersSlice";
+import type { Address } from "../../types/address";
+import Spinner from "../../UI/Spinner/Spinner";
+import "./Summary.scss";
 
 export default function Summary() {
   const cart = useAppSelector((state) => state.cart.items);
   const restaurants = useAppSelector((state) => state.restaurants.items);
-  const addresses = useAppSelector((state) => state.auth.user?.addresses);
+  const addresses = useAppSelector((state) => state.users.user?.addresses);
+  const isRestaurantsLoading = useAppSelector((state) => state.restaurants.loading);
+  const isUserLoading = useAppSelector((state) => state.users.loading);
   const dispatch = useAppDispatch();
 
-  const [deliveryMethod, setDeliveryMethod] = useState<string>("delivery");
-  const [address, setAddress] = useState<string>("michurina");
-  const [paymentMethod, setPaymentMethod] = useState<string>("card");
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryType>(DeliveryType.PICKUP);
+  const [address, setAddress] = useState<Address | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.CARD);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(fetchRestaurants());
-  }, [dispatch, deliveryMethod]);
+    dispatch(fetchProfileThunk());
+  }, [dispatch]);
 
-  const totalAmount = cart.reduce((sum, item) => {
-    return sum + item.dish.price * item.quantity;
-  }, 0);
+  // Определяем, загружены ли необходимые данные
+  const isLoading = isRestaurantsLoading || isUserLoading || restaurants.length === 0;
 
-  const deliveryOptions: Option[] = [
-    { label: "Самовывоз", value: "self" },
-    { label: "Доставка", value: "delivery" },
+  useEffect(() => {
+    if (!isLoading && restaurants.length > 0) {
+      // Устанавливаем адрес по умолчанию после загрузки
+      if (deliveryMethod === DeliveryType.PICKUP && !address) {
+        setAddress(restaurants[0]?.address || null);
+      } else if (deliveryMethod === DeliveryType.DELIVERY && addresses && addresses.length > 0 && !address) {
+        setAddress(addresses[0]|| null);
+      }
+    }
+  }, [isLoading, deliveryMethod, restaurants, addresses, address]);
+
+  const totalAmount = cart.reduce((sum, item) => sum + item.dish.price * item.quantity, 0);
+
+  const deliveryOptions: Option<DeliveryType>[] = [
+    { label: "Самовывоз", value: DeliveryType.PICKUP },
+    { label: "Доставка", value: DeliveryType.DELIVERY },
   ];
 
-  // Адреса ресторанов для самовывоза
-  const restaurantAddresses: Option[] = restaurants.map((restaurant) => ({
-    label: restaurant.address,
+  const restaurantAddresses: Option<Address>[] = restaurants.map((restaurant) => ({
+    label: formatAddressShort(restaurant.address),
     value: restaurant.address,
   }));
 
-  const userAddressesMap = addresses?.map((address) => ({
-    label: address,
-    value: address,
-  }));
+  const userAddressesOptions: Option<Address>[] =
+    addresses?.map((addr) => ({
+      label: formatAddressShort(addr),
+      value: addr,
+    })) || [];
 
-  // Адреса пользователя для доставки
-  const userAddresses: Option[] = [
-    ...(userAddressesMap || []),
+  const userAddresses: Option<Address>[] = [
+    ...userAddressesOptions,
     {
       label: "Добавить новый адрес",
-      value: "add",
+      value: null,
       onClick: () => setIsAddressModalOpen(true),
     },
   ];
 
-  // В зависимости от способа доставки выбираем список адресов
   const addressOptions =
-    deliveryMethod === "self" ? restaurantAddresses : userAddresses;
+    deliveryMethod === DeliveryType.PICKUP ? restaurantAddresses : userAddresses;
 
-  const paymentOptions: Option[] = [
-    { label: "Наличными курьеру", value: "cash" },
-    { label: "Картой курьеру", value: "card" },
+  const paymentOptions: Option<PaymentMethod>[] = [
+    { label: "Наличными курьеру", value: PaymentMethod.CASH },
+    { label: "Картой курьеру", value: PaymentMethod.CARD },
   ];
 
-  const handleDeliveryChange = (value: string, option: Option) => {
-    setDeliveryMethod(value);
-    // При переключении на самовывоз сбрасываем адрес на первый ресторан
-    if (value === "self") {
-      setAddress("tverskaya");
-    }
-    // При переключении на доставку сбрасываем на первый пользовательский адрес
-    if (value === "delivery") {
-      setAddress("kakhovska");
+  const handleDeliveryChange = (option: Option<DeliveryType>) => {
+    if (!option.value) return;
+    setDeliveryMethod(option.value);
+
+    if (option.value === DeliveryType.PICKUP && restaurants[0]?.address) {
+      setAddress(restaurants[0].address);
+    } else if (option.value === DeliveryType.DELIVERY && addresses?.[0]) {
+      setAddress(addresses[0]);
     }
   };
 
-  const handleAddressChange = (value: string, option: Option) => {
-    setAddress(value);
+  const handleAddressChange = (option: Option<Address>) => {
+    if (!option.value) return;
+    setAddress(option.value);
   };
 
-  const handlePaymentChange = (value: string, option: Option) => {
-    setPaymentMethod(value);
+  const handlePaymentChange = (option: Option<PaymentMethod>) => {
+    if (!option.value) return;
+    setPaymentMethod(option.value);
   };
 
   const handleOrderSubmit = async () => {
-    if (cart.length === 0) return;
+    if (cart.length === 0 || !address) return;
 
     try {
-      let deliveryAddress = "";
-
-      if (deliveryMethod === "self") {
-        // Для самовывоза берем название ресторана
-        const selectedRestaurant = restaurantAddresses.find(
-          (addr) => addr.value === address,
-        );
-        deliveryAddress = selectedRestaurant?.label || "";
-      } else {
-        // Для доставки берем адрес пользователя
-        const selectedUserAddress = userAddresses.find(
-          (addr) => addr.value === address,
-        );
-        deliveryAddress = selectedUserAddress?.label || "";
-      }
-
       await createOrder({
-        deliveryType:
-          deliveryMethod === "self"
-            ? DeliveryType.PICKUP
-            : DeliveryType.DELIVERY,
-        deliveryAddress: deliveryAddress,
+        deliveryType: deliveryMethod,
+        deliveryAddress: address,
         items: cart.map((item) => ({
           dishId: item.dish.id,
           quantity: item.quantity,
@@ -125,12 +124,9 @@ export default function Summary() {
     }
   };
 
-  const handleAddressModalSuccess = (newAddress: string) => {
-    // Здесь можно обновить список адресов пользователя
-    console.log("Новый адрес добавлен:", newAddress);
-    // TODO: добавить новый адрес в userAddresses
-    setIsAddressModalOpen(false);
-  };
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -145,7 +141,7 @@ export default function Summary() {
           />
 
           <h1>
-            {deliveryMethod === "self"
+            {deliveryMethod === DeliveryType.PICKUP
               ? "Ресторан для самовывоза"
               : "Адрес доставки"}
           </h1>
@@ -154,7 +150,7 @@ export default function Summary() {
             value={address}
             onChange={handleAddressChange}
             ariaLabel={
-              deliveryMethod === "self"
+              deliveryMethod === DeliveryType.PICKUP
                 ? "Выберите ресторан для самовывоза"
                 : "Выберите адрес доставки"
             }

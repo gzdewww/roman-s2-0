@@ -20,22 +20,26 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class Address {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
-  @Column(name = "flat")
-  private Integer flat;
+  @Column(name = "street")
+  private String street;
+
+  @Column(name = "building")
+  private Integer building;
+
+  @Column(name = "apartment")
+  private Integer apartment;
+
+  @Column(name = "floor")
+  private Integer floor;
 
   @Column(name = "entrance")
   private Integer entrance;
 
   @Column(name = "comment")
   private String comment;
-
-  @Column(name = "geo")
-  private String geo;
-
 }

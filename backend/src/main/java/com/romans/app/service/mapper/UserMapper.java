@@ -9,12 +9,26 @@ public class UserMapper {
       return null;
     }
     return UserDto.builder()
-      .id(user.getId())
-      .name(user.getName())
-      .email(user.getEmail())
-      .phone(user.getPhone())
-      .role(user.getRole())
-      .addresses(user.getAddresses())
-      .build();
+        .id(user.getId())
+        .name(user.getName())
+        .email(user.getEmail())
+        .phone(user.getPhone())
+        .roles(user.getRoles())
+        .build();
+  }
+
+  public static User toEntity(UserDto userDto) {
+    if (userDto == null) {
+      return null;
+    }
+    User user = new User();
+    user.setId(userDto.getId());
+    user.setName(userDto.getName());
+    user.setEmail(userDto.getEmail());
+    user.setPhone(userDto.getPhone());
+    user.setRoles(userDto.getRoles());
+    return user;
   }
 }
+
+

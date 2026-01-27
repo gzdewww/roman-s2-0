@@ -1,6 +1,7 @@
 import { DeliveryType, OrderStatus } from "./enums";
 import type { Dish } from "./dish";
 import type { User } from "./user";
+import type { Address } from "./address";
 
 export interface OrderItem {
   id: number;
@@ -13,7 +14,7 @@ export interface Order {
   id: number;
   createdAt: string;
   deliveredAt?: string;
-  deliveryAddress: string;
+  deliveryAddress: Address;
   deliveryType: DeliveryType;
   totalPrice: number;
   status: OrderStatus;

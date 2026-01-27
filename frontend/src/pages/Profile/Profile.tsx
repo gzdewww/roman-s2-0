@@ -1,51 +1,49 @@
 // src/pages/PersonalCabinet/PersonalCabinet.tsx
 import { useEffect, useState } from "react";
 import { deleteBookingById } from "../../api/bookingsApi";
-import BookingForm from "../../components/Booking/BookingForm";
+import BookingEditForm from "../../components/Booking/BookingEditForm";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { getProfileThunk, openAuthModal } from "../../store/auth/authSlice";
-import { closeBookingModal, fetchMyBookings, openBookingModal } from "../../store/bookings/bookingsSlice";
-import { fetchMyOrders } from "../../store/orders/ordersSlice";
+import { openAuthModal } from "../../store/auth/authSlice";
 import {
-  closeRestaurantModal
-} from "../../store/restaurants/restaurantsSlice";
+  closeBookingModal,
+  fetchMyBookings,
+  openBookingModal,
+} from "../../store/bookings/bookingsSlice";
+import { fetchMyOrders } from "../../store/orders/ordersSlice";
+import { fetchProfileThunk } from "../../store/users/usersSlice";
 import { DeliveryType } from "../../types/enums";
 import Button from "../../UI/Button/Button";
 import Modal from "../../UI/Modal/Modal";
 import "./Profile.scss";
-import BookingEditForm from "../../components/Booking/BookingEditForm";
 
 export default function Profile() {
   const dispatch = useAppDispatch();
   const authState = useAppSelector((state) => state.auth);
   const ordersState = useAppSelector((state) => state.orders);
   const bookingState = useAppSelector((state) => state.bookings);
-  const restaurantState = useAppSelector((state) => state.restaurants);
+  const userState = useAppSelector((state) => state.users);
 
-  const [activeTab, setActiveTab] = useState<"orders" | "bookings">("orders");
+  // Обновляем тип вкладок: теперь есть profile
+  const [activeTab, setActiveTab] = useState<"orders" | "bookings" | "profile">(
+    "profile",
+  );
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Загружаем данные профиля и истории при монтировании
     const initializeProfile = async () => {
-      // Если есть токен, но нет данных пользователя, загружаем профиль
-      if (authState.token && !authState.user) {
-        await dispatch(getProfileThunk());
+      if (authState.token && !userState.user) {
+        await dispatch(fetchProfileThunk());
       }
-      
-      // Загружаем заказы и бронирования
       dispatch(fetchMyOrders());
       dispatch(fetchMyBookings());
-      
       setIsInitialized(true);
     };
 
     if (!isInitialized) {
       initializeProfile();
     }
-  }, [dispatch, authState.token, authState.user, isInitialized]);
+  }, [dispatch, authState.token, userState.user, isInitialized]);
 
-  // Показываем загрузку, пока данные инициализируются
   if (!isInitialized && authState.token) {
     return (
       <div className="personal-cabinet personal-cabinet--loading">
@@ -57,8 +55,7 @@ export default function Profile() {
     );
   }
 
-  // Если нет пользователя и токена, показываем форму входа
-  if (!authState.user && !authState.token) {
+  if (!userState.user && !authState.token) {
     return (
       <div className="personal-cabinet personal-cabinet--unauthorized">
         <div className="personal-cabinet__empty">
@@ -72,7 +69,7 @@ export default function Profile() {
     );
   }
 
-  const user = authState.user!;
+  const user = userState.user!;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("ru-RU", {
@@ -110,7 +107,7 @@ export default function Profile() {
       <div className="personal-cabinet__header">
         <div className="personal-cabinet__user-info">
           <div className="personal-cabinet__avatar">
-            {user.name.charAt(0).toUpperCase()}
+            {user.name?.charAt(0).toUpperCase()}
           </div>
           <div>
             <h1 className="personal-cabinet__welcome">
@@ -139,7 +136,14 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Обновлённые вкладки с добавлением "Профиль" */}
       <div className="personal-cabinet__tabs">
+        <button
+          className={`personal-cabinet__tab ${activeTab === "profile" ? "personal-cabinet__tab--active" : ""}`}
+          onClick={() => setActiveTab("profile")}
+        >
+          Профиль
+        </button>
         <button
           className={`personal-cabinet__tab ${activeTab === "orders" ? "personal-cabinet__tab--active" : ""}`}
           onClick={() => setActiveTab("orders")}
@@ -165,7 +169,40 @@ export default function Profile() {
       </div>
 
       <div className="personal-cabinet__content">
-        {activeTab === "orders" ? (
+        {activeTab === "profile" && (
+          <div className="personal-cabinet__profile">
+            <div className="profile">
+              <h2 className="profile__title">Личная информация</h2>
+              <div className="profile__grid">
+                <div className="profile__item">
+                  <span className="profile__label">Имя</span>
+                  <span className="profile__value">{user.name}</span>
+                </div>
+                <div className="profile__item">
+                  <span className="profile__label">Email</span>
+                  <span className="profile__value">{user.email}</span>
+                </div>
+                <div className="profile__item">
+                  <span className="profile__label">Телефон</span>
+                  <span className="profile__value">
+                    {user.phone || "Не указан"}
+                  </span>
+                </div>
+                <div className="profile__item">
+                  <span className="profile__label">Дата регистрации</span>
+                  <span className="profile__value">{user.createdAt}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Пока без кнопки редактирования, но можно добавить */}
+            <div className="profile__actions">
+              <Button disabled>Редактировать профиль</Button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "orders" && (
           <div className="personal-cabinet__orders">
             {ordersState.loading ? (
               <div className="personal-cabinet__loading">
@@ -247,7 +284,9 @@ export default function Profile() {
               </div>
             )}
           </div>
-        ) : (
+        )}
+
+        {activeTab === "bookings" && (
           <div className="personal-cabinet__bookings">
             {bookingState.loading ? (
               <div className="personal-cabinet__loading">

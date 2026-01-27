@@ -19,6 +19,7 @@ import com.romans.app.repository.DishRepository;
 import com.romans.app.repository.OrderRepository;
 import com.romans.app.repository.UserRepository;
 import com.romans.app.service.OrderService;
+import com.romans.app.service.mapper.AddressMapper;
 import com.romans.app.service.mapper.OrderMapper;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -42,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     Order order = new Order();
     order.setClient(client);
     order.setDeliveryType(request.getDeliveryType());
-    order.setDeliveryAddress(request.getDeliveryAddress());
+    order.setDeliveryAddress(AddressMapper.toEntity(request.getDeliveryAddress()));
     order.setStatus(OrderStatus.CONFIRMED);
 
     List<OrderItem> items = new ArrayList<>();

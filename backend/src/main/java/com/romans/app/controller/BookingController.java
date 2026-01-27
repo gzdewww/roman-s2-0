@@ -37,7 +37,7 @@ public class BookingController {
             @RequestBody CreateBookingRequestDto request,
             @AuthenticationPrincipal AuthPrincipal principal) {
         if (principal == null) {
-            throw new AccessDeniedException("User must be authenticated to create an order");
+            throw new AccessDeniedException("Пользователь должен быть аутентифицирован для создания брони");
         }
         Long userId = principal.userId();
         System.out.println("Creating booking for user " + userId);
@@ -48,7 +48,7 @@ public class BookingController {
     public List<BookingDto> getMyBookings(
             @AuthenticationPrincipal AuthPrincipal principal) {
         if (principal == null) {
-            throw new AccessDeniedException("User must be authenticated to create an order");
+            throw new AccessDeniedException("Пользователь должен быть аутентифицирован для получения своих броней");
         }
         Long userId = principal.userId();
         return bookingService.getMyBookings(userId);
@@ -60,7 +60,7 @@ public class BookingController {
             @RequestBody Map<String, String> request, // <-- Временное решение
             @AuthenticationPrincipal AuthPrincipal principal) {
         if (principal == null) {
-            throw new AccessDeniedException("User must be authenticated to update a booking");
+            throw new AccessDeniedException("Пользователь должен быть аутентифицирован для изменения времени брони");
         }
 
         String bookingTimeStr = request.get("bookingTime");
@@ -77,7 +77,7 @@ public class BookingController {
             @AuthenticationPrincipal AuthPrincipal principal) {
 
         if (principal == null) {
-            throw new AccessDeniedException("User must be authenticated to delete a booking");
+            throw new AccessDeniedException("Пользователь должен быть аутентифицирован для удаления брони");
         }
 
         Long userId = principal.userId();

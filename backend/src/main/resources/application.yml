@@ -19,4 +19,3 @@ spring:
 
 jwt:
   secret: Y2hhbmdlLXRoaXMtc2VjcmV0LWNoYW5nZS10aGlzLXNlY3JldA==
-

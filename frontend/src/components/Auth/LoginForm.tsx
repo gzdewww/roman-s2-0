@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   loginThunk,
-  getProfileThunk,
   closeAuthModal,
   switchAuthModalType,
 } from "../../store/auth/authSlice";
 import Button from "../../UI/Button/Button";
 import { Input } from "../../UI/Input/Input";
 import "./AuthForm.scss";
+import { fetchProfileThunk } from "../../store/users/usersSlice";
 
 export default function LoginForm() {
   const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ export default function LoginForm() {
       // отправляем логин — thunk кладёт token в localStorage
       await dispatch(loginThunk({ email, password })).unwrap();
       // проверяем токен и получаем профиль
-      await dispatch(getProfileThunk()).unwrap();
+      await dispatch(fetchProfileThunk());
       // закрываем модалку
       dispatch(closeAuthModal());
     } catch (err: any) {

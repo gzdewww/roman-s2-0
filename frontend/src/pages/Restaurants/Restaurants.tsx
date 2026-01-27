@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import BookingForm from "../../components/Booking/BookingForm";
+import { formatAddressShort } from "../../helpers/addressFormatter";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   closeRestaurantModal,
@@ -12,59 +13,57 @@ import Modal from "../../UI/Modal/Modal";
 import "./Restaurants.scss";
 
 export default function Restaurants() {
-  const restaurants = useAppSelector((state) => state.restaurants);
+  const { items: restaurants, isModalOpen } = useAppSelector(
+    (state) => state.restaurants,
+  );
   const dispatch = useAppDispatch();
 
-  const getRestaurants = async () => {
-    await dispatch(fetchRestaurants());
-  };
-
   useEffect(() => {
-    getRestaurants();
-  }, []);
+    dispatch(fetchRestaurants());
+  }, [dispatch]);
 
   return (
-    <>
-      <section className="content__restaurants">
-        <h1 className="restaurants__title">Наши рестораны</h1>
-        {restaurants.items.map((restaurant) => (
-          <div
-            key={restaurant.id}
-            className="restaurant-card"
-            data-restaurant-id="${item.id}"
-          >
-            <div className="restaurant-card__img-wrapper">
-              <img
-                className="restaurant-card__img"
-                src={`http://localhost:8080${restaurant.imageUrl}`}
-                alt=""
-              />
-            </div>
-            <div className="restaurant-card__content">
-              <h2 className="restaurant-card__title">{restaurant.name}</h2>
-              <p className="restaurant-card__address">{restaurant.address}</p>
-              <p className="restaurant-card__seats">
-                Количество мест: {restaurant.seatsCount}
-              </p>
-              <Button
-                className="restaurant-card__button"
-                onClick={() => {
-                  dispatch(selectRestaurant(restaurant));
-                  dispatch(openRestaurantModal());
-                }}
-              >
-                Забронировать столик
-              </Button>
-            </div>
+    <section className="content__restaurants">
+      <h1 className="restaurants__title">Наши рестораны</h1>
+      {restaurants.map((restaurant) => (
+        <div
+          key={restaurant.id}
+          className="restaurant-card"
+          data-restaurant-id={restaurant.id}
+        >
+          <div className="restaurant-card__img-wrapper">
+            <img
+              className="restaurant-card__img"
+              src={`http://localhost:8080${restaurant.imageUrl}`}
+              alt={restaurant.name}
+            />
           </div>
-        ))}
-      </section>
+          <div className="restaurant-card__content">
+            <h2 className="restaurant-card__title">{restaurant.name}</h2>
+            <p className="restaurant-card__address">
+              {formatAddressShort(restaurant.address)}
+            </p>
+            <p className="restaurant-card__seats">
+              Количество мест: {restaurant.seatsCount}
+            </p>
+            <Button
+              className="restaurant-card__button"
+              onClick={() => {
+                dispatch(selectRestaurant(restaurant));
+                dispatch(openRestaurantModal());
+              }}
+            >
+              Забронировать столик
+            </Button>
+          </div>
+        </div>
+      ))}
 
-      {restaurants.isModalOpen && (
+      {isModalOpen && (
         <Modal onClose={() => dispatch(closeRestaurantModal())}>
           <BookingForm />
         </Modal>
       )}
-    </>
+    </section>
   );
 }

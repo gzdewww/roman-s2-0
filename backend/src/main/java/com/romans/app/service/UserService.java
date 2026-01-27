@@ -1,5 +1,6 @@
 package com.romans.app.service;
 
+import com.romans.app.dto.request.AddAddressRequestDto;
 import com.romans.app.dto.response.UserDto;
 import com.romans.app.model.User;
 
@@ -8,5 +9,5 @@ public interface UserService {
 
   User findById(Long userId);
 
-  UserDto addAddress(Long userId, String address);
+  UserDto addAddress(Long userId, AddAddressRequestDto address);
 }

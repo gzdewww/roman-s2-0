@@ -1,3 +1,4 @@
+import type { Address } from "./address";
 import { DeliveryType } from "./enums";
 
 export interface OrderItemRequest {
@@ -7,6 +8,6 @@ export interface OrderItemRequest {
 
 export interface CreateOrderRequest {
   deliveryType: DeliveryType;
-  deliveryAddress: string;
+  deliveryAddress: Address;
   items: OrderItemRequest[];
 }

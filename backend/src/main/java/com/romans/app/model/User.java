@@ -1,7 +1,11 @@
 package com.romans.app.model;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -35,32 +39,91 @@ public class User {
 	@Column(name = "id", updatable = false, nullable = false, unique = true)
 	private Long id;
 
-	@Column(name = "name", nullable = false)
+	@Column(name = "name", nullable = false, length = 100)
 	private String name;
 
-	@Column(name = "email", nullable = false, unique = true)
+	@Column(name = "email", nullable = false, unique = true, length = 150)
 	private String email;
 
-	@Column(name = "phone")
+	@Column(name = "phone", length = 20)
 	private String phone;
 
 	@Column(name = "password", nullable = false)
 	private String password;
 
+	@Builder.Default
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private LocalDateTime createdAt = LocalDateTime.now();
+
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@Builder.Default
+	private List<Order> orders = new ArrayList<>();
+
+	@OneToMany(mappedBy = "courier", fetch = FetchType.LAZY)
+	@Builder.Default
+	private List<Order> deliveries = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@Builder.Default
+	private List<UserAddress> userAddresses = new ArrayList<>();
+
+	@ElementCollection(targetClass = Role.class)
+	@CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+	@Column(name = "role", nullable = false)
+	@Enumerated(EnumType.STRING)
+	@Builder.Default
+	private List<Role> roles = new ArrayList<>();
+
 	@OneToOne(mappedBy = "manager", fetch = FetchType.LAZY)
 	private Restaurant restaurant;
 
-	@Enumerated(EnumType.STRING)
-	private Role role;
+	public void addRole(Role role) {
+		if (roles == null) {
+			roles = new ArrayList<>();
+		}
+		roles.add(role);
+	}
 
-	@OneToMany(mappedBy = "client")
-	private List<Order> orders;
+	public void removeRole(Role role) {
+		if (roles != null) {
+			roles.remove(role);
+		}
+	}
 
-	@OneToMany(mappedBy = "courier")
-	private List<Order> deliveries;
+	public void addAddress(UserAddress address) {
+		userAddresses.add(address);
+		address.setUser(this);
+	}
 
-	@ElementCollection
-	@CollectionTable(name = "user_addresses", joinColumns = @JoinColumn(name = "user_id"))
-	@Column(name = "address")
-	private List<String> addresses;
+	public void removeAddress(UserAddress address) {
+		userAddresses.remove(address);
+		address.setUser(null);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof User))
+			return false;
+		User user = (User) o;
+		return Objects.equals(email, user.email); // Сравнение по email как уникальному полю
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email);
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", phone='" + phone + '\'' +
+				", createdAt=" + createdAt +
+				", roles=" + roles +
+				'}';
+	}
 }

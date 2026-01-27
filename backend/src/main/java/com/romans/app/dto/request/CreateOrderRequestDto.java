@@ -2,6 +2,7 @@ package com.romans.app.dto.request;
 
 import java.util.List;
 
+import com.romans.app.dto.response.AddressDto;
 import com.romans.app.model.DeliveryType;
 
 import lombok.AllArgsConstructor;
@@ -17,6 +18,6 @@ import lombok.Setter;
 @Builder
 public class CreateOrderRequestDto {
   private DeliveryType deliveryType;
-  private String deliveryAddress;
+  private AddressDto deliveryAddress;
   private List<OrderItemRequestDto> items;
 }

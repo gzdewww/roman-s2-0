@@ -14,8 +14,8 @@ import lombok.Setter;
 public class RestaurantDto {
   private Long id;
   private String name;
-  private String address;
+  private AddressDto address;
   private Integer seatsCount;
   private String imageUrl;
-  private ManagerShortDto manager;
+  private UserDto manager;
 }

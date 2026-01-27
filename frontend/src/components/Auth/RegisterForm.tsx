@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
-  registerThunk,
-  getProfileThunk,
   closeAuthModal,
-  switchAuthModalType,
+  registerThunk,
+  switchAuthModalType
 } from "../../store/auth/authSlice";
+import { fetchProfileThunk } from "../../store/users/usersSlice";
 import Button from "../../UI/Button/Button";
 import { Input } from "../../UI/Input/Input";
 import "./AuthForm.scss";
@@ -24,7 +24,7 @@ export default function RegisterForm() {
     try {
       await dispatch(registerThunk({ name, email, password })).unwrap();
 
-      await dispatch(getProfileThunk()).unwrap();
+      await dispatch(fetchProfileThunk());
       dispatch(closeAuthModal());
     } catch (err) {
       console.error("Register error:", err);
