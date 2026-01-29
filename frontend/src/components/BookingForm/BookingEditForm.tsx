@@ -9,6 +9,8 @@ import {
 import Button from "../../UI/Button/Button";
 import { Input } from "../../UI/Input/Input";
 import "./BookingForm.scss";
+import Select from "../../UI/Select/Select";
+import { addNotification } from "../../store/notification/notificationsSlice";
 
 export default function BookingEditForm() {
   const bookingState = useAppSelector((state) => state.bookings);
@@ -32,7 +34,7 @@ export default function BookingEditForm() {
       const formattedDate = bookingDate.toISOString().split("T")[0];
       const formattedTime = bookingDate.toTimeString().slice(0, 5);
 
-      setDate(formattedDate);
+      setDate(formattedDate || "");
       setTime(formattedTime);
     }
   }, [selectedBooking]);
@@ -64,7 +66,7 @@ export default function BookingEditForm() {
       setIsSubmitting(true);
 
       // Используем ID из selectedBooking
-      await editTimeById(bookingDateTime,selectedBooking.id);
+      await editTimeById(bookingDateTime, selectedBooking.id);
 
       // Обновляем список бронирований
       dispatch(fetchMyBookings());
@@ -72,7 +74,7 @@ export default function BookingEditForm() {
       // Закрываем модальное окно
       dispatch(closeBookingModal());
 
-      alert("Бронирование успешно перенесено!");
+      dispatch(addNotification({ message: "Бронирование успешно перенесено!", type: "success"}));
     } catch (error: any) {
       console.error("Ошибка переноса:", error);
       setError(
@@ -145,25 +147,24 @@ export default function BookingEditForm() {
 
           <div className="booking-form__field">
             <label className="booking-form__label">Новое время</label>
-            <select
-              className="booking-form__time-select"
+            <Select
+              options={[
+                { value: "12:00", label: "12:00" },
+                { value: "13:00", label: "13:00" },
+                { value: "14:00", label: "14:00" },
+                { value: "15:00", label: "15:00" },
+                { value: "16:00", label: "16:00" },
+                { value: "17:00", label: "17:00" },
+                { value: "18:00", label: "18:00" },
+                { value: "19:00", label: "19:00" },
+                { value: "20:00", label: "20:00" },
+                { value: "21:00", label: "21:00" },
+                { value: "22:00", label: "22:00" },
+              ]}
               value={time}
-              onChange={(e) => setTime(e.target.value)}
-              required
+              onChange={(option) => setTime(option.value || "19:00")}
               disabled={isSubmitting}
-            >
-              <option value="12:00">12:00</option>
-              <option value="13:00">13:00</option>
-              <option value="14:00">14:00</option>
-              <option value="15:00">15:00</option>
-              <option value="16:00">16:00</option>
-              <option value="17:00">17:00</option>
-              <option value="18:00">18:00</option>
-              <option value="19:00">19:00</option>
-              <option value="20:00">20:00</option>
-              <option value="21:00">21:00</option>
-              <option value="22:00">22:00</option>
-            </select>
+            />
           </div>
         </div>
 

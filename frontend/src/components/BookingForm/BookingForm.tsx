@@ -7,6 +7,7 @@ import "./BookingForm.scss";
 import { createBookingThunk } from "../../store/bookings/bookingsSlice";
 import { closeRestaurantModal } from "../../store/restaurants/restaurantsSlice";
 import Select from "../../UI/Select/Select";
+import { addNotification } from "../../store/notification/notificationsSlice";
 
 export default function BookingForm() {
   const restaurantState = useAppSelector((state) => state.restaurants);
@@ -23,12 +24,12 @@ export default function BookingForm() {
     event.preventDefault();
 
     if (!authState.token) {
-      alert("Для бронирования необходимо войти в систему");
+      dispatch(addNotification({ message: "Для бронирования необходимо войти в систему", type: "error" }));
       return;
     }
 
     if (guestsCount < 1 || guestsCount > 20) {
-      alert("Количество гостей должно быть от 1 до 20");
+      dispatch(addNotification({ message: "Количество гостей должно быть от 1 до 20", type: "error" }));
       return;
     }
 
@@ -36,7 +37,7 @@ export default function BookingForm() {
     const bookingDate = new Date(bookingDateTime);
 
     if (bookingDate < new Date()) {
-      alert("Нельзя забронировать стол на прошедшее время");
+      dispatch(addNotification({ message: "Нельзя забронировать стол на прошедшее время", type: "error" }));
       return;
     }
 
@@ -48,8 +49,9 @@ export default function BookingForm() {
           guestsCount,
           comment: comment || undefined,
         }),
-      );
-
+      ).then(() => {
+        dispatch(closeRestaurantModal());
+      });
     } catch (error: any) {
       console.error("Ошибка бронирования:", error);
     }
@@ -60,7 +62,7 @@ export default function BookingForm() {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const formattedDate = tomorrow.toISOString().split("T")[0];
-    setDate(formattedDate);
+    setDate(formattedDate || "");
   }, []);
 
   const getMinDate = () => {
@@ -107,35 +109,23 @@ export default function BookingForm() {
           <div className="booking-form__field">
             <label className="booking-form__label">Время</label>
             <Select
-            options={[{value: "12:00", label: "12:00"},
-            {value: "13:00", label: "13:00"},
-            {value: "14:00", label: "14:00"},
-            {value: "15:00", label: "15:00"},
-            {value: "16:00", label: "16:00"},
-            {value: "17:00", label: "17:00"},
-            {value: "18:00", label: "18:00"},
-            {value: "19:00", label: "19:00"},
-            {value: "20:00", label: "20:00"},
-            {value: "21:00", label: "21:00"},
-            {value: "22:00", label: "22:00"},
-            ]}
+              options={[
+                { value: "12:00", label: "12:00" },
+                { value: "13:00", label: "13:00" },
+                { value: "14:00", label: "14:00" },
+                { value: "15:00", label: "15:00" },
+                { value: "16:00", label: "16:00" },
+                { value: "17:00", label: "17:00" },
+                { value: "18:00", label: "18:00" },
+                { value: "19:00", label: "19:00" },
+                { value: "20:00", label: "20:00" },
+                { value: "21:00", label: "21:00" },
+                { value: "22:00", label: "22:00" },
+              ]}
               value={time}
-              onChangeValue={setTime}
-              required
+              onChange={(option) => setTime(option.value || "")}
               disabled={bookingState.loading}
-            >
-              <option value="12:00">12:00</option>
-              <option value="13:00">13:00</option>
-              <option value="14:00">14:00</option>
-              <option value="15:00">15:00</option>
-              <option value="16:00">16:00</option>
-              <option value="17:00">17:00</option>
-              <option value="18:00">18:00</option>
-              <option value="19:00">19:00</option>
-              <option value="20:00">20:00</option>
-              <option value="21:00">21:00</option>
-              <option value="22:00">22:00</option>
-            </Select>
+            />
           </div>
         </div>
 
@@ -170,7 +160,7 @@ export default function BookingForm() {
       <div className="booking-form__actions">
         <Button
           type="button"
-          onClick={()=>dispatch(closeRestaurantModal())}
+          onClick={() => dispatch(closeRestaurantModal())}
           disabled={bookingState.loading}
         >
           Отмена

@@ -23,9 +23,9 @@ export type SelectProps<T> = {
 
 export default function Select<T>({
   options,
-  value,
+  value = options[0]?.value || null,
   onChange,
-  placeholder = "Select an option",
+  placeholder = "Выберите...",
   className = "",
   disabled = false,
   ariaLabel = "Select dropdown",

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import BookingForm from "../../components/Booking/BookingForm";
+import BookingForm from "../../components/BookingForm/BookingForm";
 import { formatAddressShort } from "../../helpers/addressFormatter";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
@@ -59,11 +59,12 @@ export default function Restaurants() {
         </div>
       ))}
 
-      {isModalOpen && (
-        <Modal onClose={() => dispatch(closeRestaurantModal())}>
-          <BookingForm />
-        </Modal>
-      )}
+      <Modal
+        onClose={() => dispatch(closeRestaurantModal())}
+        isOpen={isModalOpen}
+      >
+        <BookingForm />
+      </Modal>
     </section>
   );
 }

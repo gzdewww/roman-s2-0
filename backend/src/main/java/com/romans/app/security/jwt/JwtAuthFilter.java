@@ -1,6 +1,8 @@
 package com.romans.app.security.jwt;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.lang.NonNull;
@@ -46,23 +48,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       }
 
       String userIdStr = claims.getSubject();
-    String role = claims.get("role", String.class);
-    
-    List<SimpleGrantedAuthority> authorities = role == null
-        ? List.of()
-        : List.of(new SimpleGrantedAuthority("ROLE_" + role));
-    
-    // Создаем кастомный principal объект
-    AuthPrincipal principal = new AuthPrincipal(Long.parseLong(userIdStr), role);
-    
-    UsernamePasswordAuthenticationToken auth = 
-        new UsernamePasswordAuthenticationToken(principal, null, authorities);
-    
-    SecurityContextHolder.getContext().setAuthentication(auth);
+
+      // Парсим список ролей
+      Object rolesClaim = claims.get("roles");
+      List<String> roles = new ArrayList<>();
+      if (rolesClaim instanceof Collection<?>) {
+        ((Collection<?>) rolesClaim).forEach(r -> roles.add(r.toString()));
+      } else if (rolesClaim instanceof String) {
+        roles.add((String) rolesClaim); // для обратной совместимости
+      }
+
+      List<SimpleGrantedAuthority> authorities = roles.stream()
+          .map(r -> new SimpleGrantedAuthority("ROLE_" + r))
+          .toList();
+
+      AuthPrincipal principal = new AuthPrincipal(Long.parseLong(userIdStr), roles);
+
+      UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null, authorities);
+
+      SecurityContextHolder.getContext().setAuthentication(auth);
 
     } catch (Exception e) {
-      // не бросаем, просто логируем и пропускаем (request останется
-      // неаутентифицированным)
       logger.debug("Invalid JWT token: " + e.getMessage());
     }
 

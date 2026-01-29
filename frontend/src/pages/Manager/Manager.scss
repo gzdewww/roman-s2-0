@@ -1,31 +1,56 @@
-// frontend/src/pages/Manager/ManagerDashboard.scss
+// frontend/src/pages/Manager/Manager.scss
 
 .manager-dashboard {
-  padding: 1.5rem;
+  width: 100%;
+  padding: 1rem;
   max-width: 1200px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
 }
 
 .manager-dashboard__title {
   font-size: 1.75rem;
   margin-bottom: 1.5rem;
-  color: #333;
+  color: var(--color-text);
+  font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+}
+
+.manager-dashboard__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 1rem;
+  color: #666;
+  text-align: center;
 }
 
 .manager-dashboard__empty {
   text-align: center;
-  padding: 3rem;
-  background-color: #f8f9fa;
+  padding: 3rem 1.5rem;
+  background-color: var(--bg-main);
   border-radius: var(--border-radius);
-  color: #666;
+  box-shadow: var(--box-shadow);
+  color: var(--bg-complementary-hover);
 
   h3 {
     margin: 0 0 0.5rem 0;
     font-size: 1.25rem;
+    color: var(--color-text);
   }
 
   p {
     margin: 0;
+    font-size: 1rem;
   }
 }
 
@@ -35,19 +60,26 @@
   gap: 1.5rem;
 }
 
+// Переиспользуем стиль order-card из Profile, но адаптируем под менеджера
 .order-card {
-  background: white;
-  border: 1px solid #e9ecef;
+  background: var(--bg-main);
   border-radius: var(--border-radius);
   padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--box-shadow);
+  transition: box-shadow var(--transition);
+
+  &:hover {
+    box-shadow: var(--box-shadow-lg);
+  }
 }
 
 .order-card__header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-main);
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -55,12 +87,13 @@
 .order-card__header h3 {
   margin: 0;
   font-size: 1.25rem;
-  color: #333;
+  font-weight: bold;
+  color: var(--color-text);
 }
 
 .order-card__date {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--bg-complementary-hover);
 }
 
 .order-card__content {
@@ -69,33 +102,86 @@
   gap: 1rem;
   margin-bottom: 1.5rem;
   font-size: 0.95rem;
-  color: #444;
+  color: var(--color-text);
 }
 
 .order-card__section {
   line-height: 1.5;
+
+  strong {
+    color: var(--color-text);
+  }
 }
 
+// Блок назначения курьера — стилизация под форму
 .order-card__assign {
   display: flex;
   gap: 1rem;
   align-items: center;
+  padding-top: 1rem;
+  border-top: 1px dashed #dee2e6;
 
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
   }
 
-  select {
+  .select {
     flex: 1;
-    min-height: 40px;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: var(--border-radius-sm);
-    font-size: 0.9rem;
+
+    .select__button {
+      min-height: 48px;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius-sm);
+      background-color: white;
+      justify-content: space-between;
+      font-size: 1rem;
+
+      &:hover {
+        border-color: var(--color-main);
+      }
+
+      &:focus {
+        outline: 2px solid var(--color-main);
+        outline-offset: -1px;
+      }
+    }
+
+    .select__options {
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius-sm);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      margin-top: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .select__option {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+
+      &:hover,
+      &--focused {
+        background-color: #f8f9fa;
+      }
+
+      &--active {
+        font-weight: bold;
+        color: var(--color-main);
+      }
+    }
   }
 
-  button {
+  .button {
     min-width: 120px;
+    height: 48px;
+    padding: 0 1.5rem;
+    font-weight: 500;
+    border-radius: var(--border-radius-sm);
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   }
 }

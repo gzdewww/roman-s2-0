@@ -14,6 +14,7 @@ import { fetchProfileThunk } from "../../store/users/usersSlice";
 import type { Address } from "../../types/address";
 import Spinner from "../../UI/Spinner/Spinner";
 import "./Summary.scss";
+import { addNotification } from "../../store/notification/notificationsSlice";
 
 export default function Summary() {
   const cart = useAppSelector((state) => state.cart.items);
@@ -117,10 +118,11 @@ export default function Summary() {
       });
 
       dispatch(clearCart());
-      alert("Заказ успешно оформлен!");
+
+      dispatch(addNotification({ message: "Заказ успешно оформлен", type: "success" }));
     } catch (error) {
       console.error("Ошибка при оформлении заказа:", error);
-      alert("Произошла ошибка при оформлении заказа. Попробуйте еще раз.");
+      dispatch(addNotification({ message: "Произошла ошибка при оформлении заказа", type: "error" }));
     }
   };
 

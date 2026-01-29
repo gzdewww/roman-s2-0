@@ -18,7 +18,9 @@ export const getProfile = async (): Promise<User> => {
 };
 
 // Обновление профиля пользователя (без адресов)
-export const updateProfile = async (data: Partial<Omit<User, "addresses">>): Promise<User> => {
+export const updateProfile = async (
+  data: Partial<Omit<User, "addresses">>,
+): Promise<User> => {
   const res = await api.put<User>("/users/me", data);
   return res.data;
 };
@@ -35,5 +37,10 @@ export const addAddress = async (data: Address): Promise<Address> => {
 
 export const getAddresses = async (): Promise<Address[]> => {
   const res = await api.get<Address[]>("/users/me/addresses");
+  return res.data;
+};
+
+export const getCouriers = async (): Promise<User[]> => {
+  const res = await api.get<User[]>("/users?role=COURIER");
   return res.data;
 };

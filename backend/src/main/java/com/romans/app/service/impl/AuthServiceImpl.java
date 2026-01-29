@@ -40,7 +40,8 @@ public class AuthServiceImpl implements AuthService {
           "Invalid credentials");
     }
 
-    return new AuthResponse(jwtService.generateToken(user.getId(), user.getRoles().toString()));
+    return new AuthResponse(jwtService.generateToken(user.getId(),
+        user.getRoles().stream().map(Enum::name).toList()));
   }
 
   @Override
@@ -56,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
     user.setRoles(List.of(Role.CUSTOMER));
 
     userRepository.save(user);
-    return new AuthResponse(jwtService.generateToken(user.getId(), user.getRoles().toString()));
+    return new AuthResponse(jwtService.generateToken(user.getId(),
+        user.getRoles().stream().map(Enum::name).toList()));
   }
 }

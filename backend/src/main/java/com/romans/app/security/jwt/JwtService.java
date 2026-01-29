@@ -1,6 +1,7 @@
 package com.romans.app.security.jwt;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 
@@ -24,10 +25,10 @@ public class JwtService {
     this.key = Keys.hmacShaKeyFor(keyBytes);
   }
 
-  public String generateToken(Long userId, String role) {
+  public String generateToken(Long userId, List<String> roles) {
     return Jwts.builder()
         .subject(userId.toString())
-        .claim("role", role)
+        .claim("roles", roles) // теперь roles — массив
         .issuedAt(new Date())
         .expiration(new Date(System.currentTimeMillis() + EXPIRATION))
         .signWith(key)

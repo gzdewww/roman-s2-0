@@ -1,7 +1,7 @@
 // src/pages/PersonalCabinet/PersonalCabinet.tsx
 import { useEffect, useState } from "react";
 import { deleteBookingById } from "../../api/bookingsApi";
-import BookingEditForm from "../../components/Booking/BookingEditForm";
+import BookingEditForm from "../../components/BookingForm/BookingEditForm";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { openAuthModal } from "../../store/auth/authSlice";
 import {
